@@ -1,5 +1,3 @@
-package Parkeersimulator;
-
 public class Location {
 
     private int floor;
