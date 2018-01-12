@@ -1,5 +1,3 @@
-package Parkeersimulator;
-
 import java.awt.*;
 
 public abstract class Car {
