@@ -1,5 +1,7 @@
-public class Location {
+package Models;
 
+public class Location extends AbstractModel
+{
     private int floor;
     private int row;
     private int place;
@@ -64,5 +66,4 @@ public class Location {
     public int getPlace() {
         return place;
     }
-
 }
