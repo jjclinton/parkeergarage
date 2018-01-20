@@ -2,6 +2,7 @@ package Views;
 
 import Models.*;
 
+import javax.swing.text.View;
 import java.awt.*;
 
 public class CarParkView extends AbstractView
@@ -9,7 +10,7 @@ public class CarParkView extends AbstractView
     // image of the car park
     private Image carParkImage;
     private Dimension size;
-
+    private String floorNumber;
     /**
      * Constructor of CarParkView that expects a model belonging to this Views
      *
@@ -17,8 +18,7 @@ public class CarParkView extends AbstractView
      */
     public CarParkView(CarPark model) {
         super(model);
-        this.size = new Dimension(680, 330);
-
+        this.size = new Dimension(880, 330);
     }
 
     /**
@@ -51,6 +51,7 @@ public class CarParkView extends AbstractView
     public void updateView() {
 
         CarPark carPark = (CarPark) super.model;
+        int floorNrX = 150;
 
         // create a new car park image if the size has changed.
         carParkImage = createImage(size.width, size.height);
@@ -59,6 +60,8 @@ public class CarParkView extends AbstractView
 
 
         for (int floor = 0; floor < CarPark.getNumberOfFloors(); floor++) {
+            drawFloorNumber(graphics, floor,floorNrX);
+            floorNrX = floorNrX + 260;
             for (int row = 0; row < CarPark.getNumberOfRows(); row++) {
                 for (int place = 0; place < CarPark.getNumberOfPlaces(); place++) {
                     Location location = new Location(floor, row, place);
@@ -88,6 +91,12 @@ public class CarParkView extends AbstractView
                 location.getFloor() * 260 + (1 + (int)Math.floor(location.getRow() * 0.5)) * 75 + (location.getRow() % 2) * 20,
                 60 + location.getPlace() * 10,
                 20 - 1,
-                10 - 1); // TODO use dynamic size or constants
+                10 - 1
+        ); // TODO use dynamic size or constants
+    }
+
+    private void drawFloorNumber(Graphics graphics, int currentFloor, int x) {
+        graphics.setColor(Color.BLACK);
+        graphics.drawString("Floor " + currentFloor, x, 30);
     }
 }
