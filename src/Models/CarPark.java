@@ -22,17 +22,6 @@ public class CarPark extends AbstractModel{
     private int hour = 0;
     private int minute = 0;
 
-    private int tickPause = 100;
-
-    private int weekDayArrivals= 100; // average number of arriving cars per hour
-    private int weekendArrivals = 200; // average number of arriving cars per hour
-    private int weekDayPassArrivals= 50; // average number of arriving cars per hour
-    private int weekendPassArrivals = 5; // average number of arriving cars per hour
-
-    private int enterSpeed = 3; // number of cars that can enter per minute
-    private int paymentSpeed = 7; // number of cars that can pay per minute
-    private int exitSpeed = 5; // number of cars that can leave per minute
-
     // hashmap with all the locations for the cars
     private static HashMap<Location, Car> cars;
 
@@ -109,7 +98,7 @@ public class CarPark extends AbstractModel{
      * @param location Location object to check.
      * @return boolean whether location is valid.
      */
-    public static boolean checkLocation(Location location) {
+    private static boolean checkLocation(Location location) {
 
         if(location == null)
             return false;
@@ -121,18 +110,13 @@ public class CarPark extends AbstractModel{
         return !(floor < 0 || floor >= numberOfFloors || row < 0 || row > numberOfRows || place < 0 || place > numberOfPlaces);
     }
 
-    public void run() {
-        for (int i = 0; i < 10; i++) {
-            tick();
-        }
-    }
-
     public void tick() {
         advanceTime();
         forward();
         handleExit();
         updateViews();
         // Pause.
+        int tickPause = 100;
         try {
             Thread.sleep(tickPause);
         } catch (InterruptedException e) {
@@ -186,6 +170,12 @@ public class CarPark extends AbstractModel{
     }
 
     private void carsArriving(){
+        int weekDayArrivals= 100; // average number of arriving cars per hour
+        int weekendArrivals = 200; // average number of arriving cars per hour
+        int weekDayPassArrivals= 50; // average number of arriving cars per hour
+        int weekendPassArrivals = 5; // average number of arriving cars per hour
+
+
         int numberOfCars=getNumberOfCars(weekDayArrivals, weekendArrivals);
         addArrivingCars(numberOfCars, AD_HOC);
         numberOfCars=getNumberOfCars(weekDayPassArrivals, weekendPassArrivals);
@@ -194,6 +184,7 @@ public class CarPark extends AbstractModel{
 
     private void carsEntering(CarQueue queue){
         int i=0;
+        int enterSpeed = 3; // number of cars that can enter per minute
         // Remove car from the front of the queue and assign to a parking space.
         while (queue.carsInQueue()>0 && this.getNumberOfOpenSpots() > 0 && i < enterSpeed) {
             Car car = queue.removeCar();
@@ -221,6 +212,7 @@ public class CarPark extends AbstractModel{
     private void carsPaying(){
         // Let cars pay.
         int i=0;
+        int paymentSpeed = 7; // number of cars that can pay per minute
         while (paymentCarQueue.carsInQueue()>0 && i < paymentSpeed){
             Car car = paymentCarQueue.removeCar();
             // TODO Handle payment.
@@ -232,6 +224,7 @@ public class CarPark extends AbstractModel{
     private void carsLeaving(){
         // Let cars leave.
         int i=0;
+        int exitSpeed = 5; // number of cars that can leave per minute
         while (exitCarQueue.carsInQueue()>0 && i < exitSpeed){
             exitCarQueue.removeCar();
             i++;
@@ -269,11 +262,7 @@ public class CarPark extends AbstractModel{
     }
 
 
-    private Car removeCarAt(Location location) {
-        if (!checkLocation(location)) {
-            return null;
-        }
-
+    private void removeCarAt(Location location) {
         Car car = cars.get(location);
 
         if(car != null){
@@ -282,21 +271,15 @@ public class CarPark extends AbstractModel{
 
         cars.put(location, null);
         numberOfOpenSpots++;
-        return car;
     }
 
-    private boolean setCarAt(Location location, Car car) {
-        if (!checkLocation(location)) {
-            return false;
-        }
+    private void setCarAt(Location location, Car car) {
         Car oldCar = cars.get(location);
         if (oldCar == null) {
             cars.put(location, car);
             car.setLocation(location);
             numberOfOpenSpots--;
-            return true;
         }
-        return false;
     }
 
 

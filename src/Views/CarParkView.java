@@ -10,7 +10,6 @@ public class CarParkView extends AbstractView
     // image of the car park
     private Image carParkImage;
     private Dimension size;
-    private String floorNumber;
     /**
      * Constructor of CarParkView that expects a model belonging to this Views
      *
@@ -25,7 +24,7 @@ public class CarParkView extends AbstractView
      * Overridden. Tell the GUI manager how big we would like to be.
      */
     public Dimension getPreferredSize() {
-        return new Dimension(800, 500);
+        return size;
     }
 
     /**
@@ -49,8 +48,6 @@ public class CarParkView extends AbstractView
 
     @Override
     public void updateView() {
-
-        CarPark carPark = (CarPark) super.model;
         int floorNrX = 150;
 
         // create a new car park image if the size has changed.
