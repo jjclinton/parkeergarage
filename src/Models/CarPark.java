@@ -13,8 +13,8 @@ public class CarPark extends AbstractModel{
     private static int numberOfPlaces;
     private static int numberOfOpenSpots;
 
-    private CarQueue entranceCarQueue;
-    private CarQueue entrancePassQueue;
+    private static CarQueue entranceCarQueue;
+    private static CarQueue entrancePassQueue;
     private CarQueue paymentCarQueue;
     private CarQueue exitCarQueue;
 
@@ -101,6 +101,14 @@ public class CarPark extends AbstractModel{
 
     private int getNumberOfOpenSpots(){
         return this.numberOfOpenSpots;
+    }
+
+    public CarQueue getEntranceCarQueue() {
+        return entranceCarQueue;
+    }
+
+    public static CarQueue getEntrancePassQueue() {
+        return entrancePassQueue;
     }
 
     /**
@@ -203,6 +211,7 @@ public class CarPark extends AbstractModel{
         }
     }
 
+
     private void carsReadyToLeave(){
         // Add leaving cars to the payment queue.
         Car car = this.getFirstLeavingCar();
@@ -267,7 +276,6 @@ public class CarPark extends AbstractModel{
                 break;
         }
     }
-
 
     private Car removeCarAt(Location location) {
         if (!checkLocation(location)) {
