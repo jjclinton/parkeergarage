@@ -2,7 +2,7 @@ package Views;
 
 import Models.*;
 
-import javax.swing.text.View;
+
 import java.awt.*;
 
 public class CarParkView extends AbstractView
@@ -54,6 +54,7 @@ public class CarParkView extends AbstractView
         carParkImage = createImage(size.width, size.height);
 
         Graphics graphics = carParkImage.getGraphics();
+        System.out.println(carPark.getEntranceCarQueue().carsInQueue());
 
 
         for (int floor = 0; floor < CarPark.getNumberOfFloors(); floor++) {
