@@ -2,7 +2,6 @@ package Views;
 
 import Models.*;
 
-
 import java.awt.*;
 
 public class CarParkView extends AbstractView

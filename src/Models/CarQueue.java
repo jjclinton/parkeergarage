@@ -15,14 +15,5 @@ public class CarQueue extends AbstractModel
         return queue.poll();
     }
 
-    public int carsInQueue(){ System.out.println(queue.size()); return queue.size();}
-
-    public void tick() {
-        updateViews();
-    }
-
-    private void updateViews(){
-        // Update the car park Views.
-        super.notifyViews();
-    }
+    public int carsInQueue(){ return queue.size();}
 }
