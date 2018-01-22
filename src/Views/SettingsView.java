@@ -2,8 +2,6 @@ package Views;
 
 import Models.CarPark;
 
-import java.awt.*;
-
 public class SettingsView extends AbstractView {
 
     /**
