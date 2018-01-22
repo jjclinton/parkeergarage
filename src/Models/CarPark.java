@@ -270,16 +270,11 @@ public class CarPark extends AbstractModel{
         }
     }
 
-<<<<<<< HEAD
-
-    private void removeCarAt(Location location) {
-=======
     private Car removeCarAt(Location location) {
         if (!checkLocation(location)) {
             return null;
         }
 
->>>>>>> 19f24f511913eea86814328c0daa598b141d3922
         Car car = cars.get(location);
 
         if(car != null){
@@ -288,6 +283,8 @@ public class CarPark extends AbstractModel{
 
         cars.put(location, null);
         numberOfOpenSpots++;
+
+        return car;
     }
 
     private void setCarAt(Location location, Car car) {
@@ -335,6 +332,4 @@ public class CarPark extends AbstractModel{
         this.removeCarAt(car.getLocation());
         exitCarQueue.addCar(car);
     }
-
-
 }
