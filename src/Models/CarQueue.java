@@ -5,7 +5,7 @@ import java.util.Queue;
 
 public class CarQueue extends AbstractModel
 {
-    private Queue<Car> queue = new LinkedList<>();
+    private static Queue<Car> queue = new LinkedList<>();
 
     public void addCar(Car car) {
         queue.add(car);
@@ -15,7 +15,14 @@ public class CarQueue extends AbstractModel
         return queue.poll();
     }
 
-    public int carsInQueue(){
-        return queue.size();
+    public  int carsInQueue(){ return queue.size();}
+
+    public void tick() {
+        updateViews();
+    }
+
+    private void updateViews(){
+        // Update the car park Views.
+        super.notifyViews();
     }
 }
