@@ -15,8 +15,8 @@ public class CarPark extends AbstractModel{
 
     private static CarQueue entranceCarQueue;
     private static CarQueue entrancePassQueue;
-    private CarQueue paymentCarQueue;
-    private CarQueue exitCarQueue;
+    private static CarQueue paymentCarQueue;
+    private static CarQueue exitCarQueue;
 
     private int day = 0;
     private int hour = 0;
@@ -92,7 +92,15 @@ public class CarPark extends AbstractModel{
         return this.numberOfOpenSpots;
     }
 
-    public CarQueue getEntranceCarQueue() {
+    public static CarQueue getEntrancePaymentQueue() {
+        return paymentCarQueue;
+    }
+
+    public static CarQueue getEntranceExitQueue() {
+        return exitCarQueue;
+    }
+
+    public static CarQueue getEntranceCarQueue() {
         return entranceCarQueue;
     }
 
@@ -184,9 +192,9 @@ public class CarPark extends AbstractModel{
         int weekendPassArrivals = 5; // average number of arriving cars per hour
 
 
-        int numberOfCars=getNumberOfCars(weekDayArrivals, weekendArrivals);
+        int numberOfCars = getNumberOfCars(weekDayArrivals, weekendArrivals);
         addArrivingCars(numberOfCars, AD_HOC);
-        numberOfCars=getNumberOfCars(weekDayPassArrivals, weekendPassArrivals);
+        numberOfCars = getNumberOfCars(weekDayPassArrivals, weekendPassArrivals);
         addArrivingCars(numberOfCars, PASS);
     }
 
@@ -268,6 +276,7 @@ public class CarPark extends AbstractModel{
                 }
                 break;
         }
+        updateViews();
     }
 
     private Car removeCarAt(Location location) {
