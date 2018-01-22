@@ -5,30 +5,40 @@ import Controllers.Controller;
 import Models.CarPark;
 import Views.AbstractView;
 import Views.CarParkView;
-import Views.CarQueueView;
+import Views.SettingsView;
+import Views.StaticsView;
 
 import javax.swing.*;
 
 public class Simulator {
 
     private CarPark carParkModel;
-    private JFrame screen;
-    private JFrame screen2;
-    private AbstractView carParkView;
-    private AbstractView carQueueView;
+
     private AbstractController carParkController;
+
+    private AbstractView carParkView;
+    private AbstractView staticsView;
+    private AbstractView settingsView;
+
 
 
     public Simulator() {
-
         /**
          * Create the model, Views and Controllers that
          * we need for the Car Park Simulation
          */
         this.carParkModel = new CarPark(3, 6, 30);
+
         this.carParkController = new Controller(carParkModel);
+
         this.carParkView = new CarParkView(carParkModel);
-        this.carQueueView = new CarQueueView(carParkModel);
+        carParkView.setBounds(0, 0, 1200, 600);
+
+        this.settingsView = new SettingsView(carParkModel);
+        settingsView.setBounds(0, 0, 1200, 600);
+
+        this.staticsView = new StaticsView(carParkModel);
+        staticsView.setBounds(0, 0, 1200, 600);
 
 
         /**
@@ -39,30 +49,42 @@ public class Simulator {
         screen.setSize(1200, 750);
         screen.setLayout(null);
 
-        screen2 = new JFrame("Car Queue Simulation");
-        screen2.setSize(300, 400);
-        screen2.setLayout(null);
+
+        JTabbedPane tabbedPane = new JTabbedPane();
+        tabbedPane.setSize(1200, 750);
 
         /**
-         * Add the views to the Core screen
+         * Add each tab panel
          */
-        screen.getContentPane().add(carParkView);
-        screen.getContentPane().add(carParkController);
+        JComponent mainPanel = new JPanel(false);
+        mainPanel.setLayout(null);
+        mainPanel.add(carParkView);
 
-        carParkView.setBounds(0, 0, 1200, 600);
+        JComponent staticsPanel = new JPanel(false);
+        staticsPanel.setLayout(null);
+        staticsPanel.add(staticsView);
 
-        screen2.getContentPane().add(carQueueView);
 
-        carQueueView.setBounds(0, 0, 300, 400);
+        JComponent settingsPanel = new JPanel(false);
+        settingsPanel.setLayout(null);
+        settingsPanel.add(settingsView);
+
+        /**
+         * Add each tab
+         */
+        tabbedPane.addTab("Simulator", mainPanel);
+        tabbedPane.addTab("Statics", staticsPanel);
+        tabbedPane.addTab("Settings", settingsPanel);
+
+        screen.getContentPane().add(tabbedPane);
+
+        tabbedPane.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
 
         /**
          * Show the Core screen, disable resizing and notify the views to update
          */
         screen.setVisible(true);
         screen.setResizable(false);
-
-        screen2.setVisible(true);
-        screen2.setResizable(true);
 
         carParkModel.notifyViews();
 

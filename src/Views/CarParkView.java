@@ -10,6 +10,7 @@ public class CarParkView extends AbstractView
     // image of the car park
     private Image carParkImage;
     private Dimension size;
+
     /**
      * Constructor of CarParkView that expects a model belonging to this Views
      *
@@ -18,13 +19,6 @@ public class CarParkView extends AbstractView
     public CarParkView(CarPark model) {
         super(model);
         this.size = new Dimension(880, 330);
-    }
-
-    /**
-     * Overridden. Tell the GUI manager how big we would like to be.
-     */
-    public Dimension getPreferredSize() {
-        return size;
     }
 
     /**
