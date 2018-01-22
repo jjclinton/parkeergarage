@@ -1,5 +1,7 @@
 package Models;
 
+import javax.swing.*;
+import java.lang.reflect.Array;
 import java.util.HashMap;
 import java.util.Random;
 
@@ -17,9 +19,11 @@ public class CarPark extends AbstractModel{
     private static CarQueue paymentCarQueue;
     private static CarQueue exitCarQueue;
 
-    private int day = 0;
+    private int dayOfYear = 0;
+    private static int day = 0;
     private int hour = 0;
     private int minute = 0;
+    private static String[] days;
 
     // hashmap with all the locations for the cars
     private static HashMap<Location, Car> cars;
@@ -44,6 +48,8 @@ public class CarPark extends AbstractModel{
                 }
             }
         }
+
+        days = new String[] {"Monday", "Thuesday", "Wednesday", "Thirsday", "Friday", "Saturday", "Sunday", ""};
     }
 
     /**
@@ -131,7 +137,7 @@ public class CarPark extends AbstractModel{
         handleExit();
         updateViews();
         // Pause.
-        int tickPause = 100;
+        int tickPause = 4;
         try {
             Thread.sleep(tickPause);
         } catch (InterruptedException e) {
@@ -153,16 +159,21 @@ public class CarPark extends AbstractModel{
     private void advanceTime(){
         // Advance the time by one minute.
         minute++;
-        while (minute > 59) {
+        if (minute > 59) {
             minute -= 60;
             hour++;
+            System.out.println(hour);
         }
-        while (hour > 23) {
+        if (hour > 23) {
             hour -= 24;
             day++;
+            dayOfYear++;
         }
-        while (day > 6) {
+        if (day > 6) {
             day -= 7;
+        }
+        if (dayOfYear > 364) {
+            dayOfYear = 0;
         }
 
     }
@@ -186,14 +197,15 @@ public class CarPark extends AbstractModel{
 
     private void carsArriving(){
         int weekDayArrivals= 100; // average number of arriving cars per hour
-        int weekendArrivals = 200; // average number of arriving cars per hour
+        int saturdayArrivals = 200; // average number of arriving cars per hour
         int weekDayPassArrivals= 50; // average number of arriving cars per hour
-        int weekendPassArrivals = 5; // average number of arriving cars per hour
+        int saturdayPassArrivals = 5; // average number of arriving cars per hour
+        int christmasArrivals = 300;
+        int sinterklaasArrivals = 350;
 
-
-        int numberOfCars = getNumberOfCars(weekDayArrivals, weekendArrivals);
+        int numberOfCars = getNumberOfCars(weekDayArrivals, saturdayArrivals);
         addArrivingCars(numberOfCars, AD_HOC);
-        numberOfCars = getNumberOfCars(weekDayPassArrivals, weekendPassArrivals);
+        numberOfCars = getNumberOfCars(weekDayPassArrivals, saturdayPassArrivals);
         addArrivingCars(numberOfCars, PASS);
     }
 
@@ -247,13 +259,17 @@ public class CarPark extends AbstractModel{
         }
     }
 
-    private int getNumberOfCars(int weekDay, int weekend){
+    private int getNumberOfCars(int weekDay, int saturday){
         Random random = new Random();
 
         // Get the average number of cars that arrive per hour.
-        int averageNumberOfCarsPerHour = day < 5
-                ? weekDay
-                : weekend;
+        int averageNumberOfCarsPerHour;
+        if (day != 5) {
+            averageNumberOfCarsPerHour = weekDay;
+        } else {
+            averageNumberOfCarsPerHour = saturday;
+        }
+
 
         // Calculate the number of cars that arrive this minute.
         double standardDeviation = averageNumberOfCarsPerHour * 0.3;
@@ -339,5 +355,9 @@ public class CarPark extends AbstractModel{
     private void carLeavesSpot(Car car){
         this.removeCarAt(car.getLocation());
         exitCarQueue.addCar(car);
+    }
+
+    public static String getCurrentDay() {
+        return days[day];
     }
 }

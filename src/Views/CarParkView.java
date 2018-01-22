@@ -2,6 +2,7 @@ package Views;
 
 import Models.*;
 
+import javax.swing.*;
 import java.awt.*;
 
 public class CarParkView extends AbstractView
@@ -9,6 +10,7 @@ public class CarParkView extends AbstractView
     // image of the car park
     private Image carParkImage;
     private Dimension size;
+    private JLabel dayLabel;
 
     /**
      * Constructor of CarParkView that expects a model belonging to this Views
@@ -18,6 +20,11 @@ public class CarParkView extends AbstractView
     public CarParkView(CarPark model) {
         super(model);
         this.size = new Dimension(880, 330);
+        //show current day
+        dayLabel = new JLabel("Current day: " + CarPark.getCurrentDay());
+        dayLabel.setSize(500, 15);
+        dayLabel.setLocation(0, 0);
+        add(dayLabel);
     }
 
     /**
@@ -42,7 +49,8 @@ public class CarParkView extends AbstractView
     @Override
     public void updateView() {
         int floorNrX = 150;
-
+        //show current day
+        currentDay();
         // create a new car park image if the size has changed.
         carParkImage = createImage(size.width, size.height);
 
@@ -88,5 +96,8 @@ public class CarParkView extends AbstractView
     private void drawFloorNumber(Graphics graphics, int currentFloor, int x) {
         graphics.setColor(Color.BLACK);
         graphics.drawString("Floor " + currentFloor, x, 30);
+    }
+    private void currentDay() {
+        dayLabel.setText("Current day: " + CarPark.getCurrentDay());
     }
 }
