@@ -1,60 +1,48 @@
 package Views;
-
 import Models.CarPark;
-
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.*;
+import javax.swing.*;
 
 public class ButtonView extends AbstractView {
-    private Button button1;
-    private Button button100;
+    private JButton button1;
+    private JButton button100;
+    private JLabel statusLabel;
 
-    /**
-     * Constructor for objects of class CarPark
-     */
     public ButtonView(CarPark model) {
         super(model);
 
-        button1 = new Button();
-        button1.setLabel("1 stap");
+        statusLabel = new JLabel("label");
+        statusLabel.setSize(350,25);
+        statusLabel.setLocation(25, 50);
+        add(statusLabel);
 
-        button100 = new Button();
-        button100.setLabel("100 stappen");
+        button1 = new JButton("1 stap");
+        button1.setSize(110, 25);
+        button1.setLocation(25, 20);
+        add(button1);
+
+        button100 = new JButton("100 stappen");
+        button100.setSize(110, 25);
+        button100.setLocation(150, 20);
+        add(button100);
 
         button1.addActionListener(new ActionListener() {
-            @Override
             public void actionPerformed(ActionEvent e) {
-                model.tick();
+                statusLabel.setText("Button 1 clicked.");
             }
         });
-
         button100.addActionListener(new ActionListener() {
-            @Override
             public void actionPerformed(ActionEvent e) {
-
-                for(int i =0; i < 100; i++){
-                    model.tick();
-                }
+                statusLabel.setText("Button 100 clicked.");
             }
         });
 
-        Container contentPane = getRootPane();
-        setLayout(new GridBagLayout());
-        GridBagConstraints gbc = new GridBagConstraints();
-        gbc.gridwidth = GridBagConstraints.REMAINDER;
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        contentPane.add(button1, gbc);
-        contentPane.add(button100, gbc);
+    }
+
+    @Override
+    public void updateView() {
+
         setVisible(true);
-
-
+        super.updateView();
     }
-
-        /**
-         * Overridden. Tell the GUI manager how big we would like to be.
-         */
-        public Dimension getPreferredSize() {
-            return new Dimension(200, 200);
-        }
-    }
+}
