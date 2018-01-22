@@ -17,7 +17,7 @@ public class CarParkView extends AbstractView
      */
     public CarParkView(CarPark model) {
         super(model);
-        this.size = new Dimension(680, 330);
+        this.size = new Dimension(900, 530);
 
     }
 
@@ -84,6 +84,7 @@ public class CarParkView extends AbstractView
      */
     private void drawPlace(Graphics graphics, Location location, Color color) {
         graphics.setColor(color);
+
         graphics.fillRect(
                 location.getFloor() * 260 + (1 + (int)Math.floor(location.getRow() * 0.5)) * 75 + (location.getRow() % 2) * 20,
                 60 + location.getPlace() * 10,
