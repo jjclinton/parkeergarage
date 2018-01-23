@@ -4,14 +4,16 @@ import java.awt.event.*;
 import javax.swing.*;
 
 public class ButtonView extends AbstractView {
+    private JButton reset;
     private JButton button1;
     private JButton button100;
+
     private JLabel statusLabel;
 
     public ButtonView(CarPark model) {
         super(model);
 
-        statusLabel = new JLabel("label");
+        statusLabel = new JLabel(" ");
         statusLabel.setSize(350,25);
         statusLabel.setLocation(25, 50);
         add(statusLabel);
@@ -26,14 +28,32 @@ public class ButtonView extends AbstractView {
         button100.setLocation(150, 20);
         add(button100);
 
+        reset = new JButton("Reset");
+        reset.setSize(110, 25);
+        reset.setLocation(275, 20);
+        add(reset);
+
         button1.addActionListener(new ActionListener() {
+            @Override
             public void actionPerformed(ActionEvent e) {
-                statusLabel.setText("Button 1 clicked.");
+                statusLabel.setText("1 stap per seconde.");
+                (CarPark.steps) = 1000;
             }
         });
+
         button100.addActionListener(new ActionListener() {
+            @Override
             public void actionPerformed(ActionEvent e) {
-                statusLabel.setText("Button 100 clicked.");
+                statusLabel.setText("100 stappen per seconde.");
+                (CarPark.steps) = 10;
+            }
+        });
+
+        reset.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                statusLabel.setText(" ");
+                (CarPark.steps) = 100;
             }
         });
 

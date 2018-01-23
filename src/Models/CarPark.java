@@ -17,6 +17,8 @@ public class CarPark extends AbstractModel{
     private static CarQueue paymentCarQueue;
     private static CarQueue exitCarQueue;
 
+    public static int steps = 100;
+
     private int day = 0;
     private int hour = 0;
     private int minute = 0;
@@ -131,7 +133,7 @@ public class CarPark extends AbstractModel{
         handleExit();
         updateViews();
         // Pause.
-        int tickPause = 100;
+        int tickPause = steps;
         try {
             Thread.sleep(tickPause);
         } catch (InterruptedException e) {
