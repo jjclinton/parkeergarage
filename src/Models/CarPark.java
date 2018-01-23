@@ -168,6 +168,7 @@ public class CarPark extends AbstractModel{
             hour -= 24;
             day++;
             dayOfYear++;
+            System.out.println(days[day]);
         }
         if (day > 6) {
             day -= 7;
@@ -196,22 +197,31 @@ public class CarPark extends AbstractModel{
     }
 
     private void carsArriving(){
-        int weekDayArrivals= 100; // average number of arriving cars per hour
-        int saturdayArrivals = 200; // average number of arriving cars per hour
-        int weekDayPassArrivals= 50; // average number of arriving cars per hour
-        int saturdayPassArrivals = 5; // average number of arriving cars per hour
-        int christmasArrivals = 300;
-        int sinterklaasArrivals = 350;
-
-        int numberOfCars = getNumberOfCars(weekDayArrivals, saturdayArrivals);
-        addArrivingCars(numberOfCars, AD_HOC);
-        numberOfCars = getNumberOfCars(weekDayPassArrivals, saturdayPassArrivals);
-        addArrivingCars(numberOfCars, PASS);
+        int numberOfCars;
+        if (day < 5) {
+            numberOfCars = getNumberOfCars(100);
+            addArrivingCars(numberOfCars, AD_HOC);
+            numberOfCars = getNumberOfCars(50);
+            addArrivingCars(numberOfCars, PASS);
+            //number of cars arriving on a weekday
+        } else if (day == 5) {
+            numberOfCars = getNumberOfCars(200);
+            addArrivingCars(numberOfCars, AD_HOC);
+            numberOfCars = getNumberOfCars(20);
+            addArrivingCars(numberOfCars, PASS);
+            //number of cars arriving on a saturday
+        } else {
+            numberOfCars = getNumberOfCars(40);
+            addArrivingCars(numberOfCars, AD_HOC);
+            numberOfCars = getNumberOfCars(5);
+            addArrivingCars(numberOfCars, PASS);
+            //number of cars arriving on a sunday
+        }
     }
 
     private void carsEntering(CarQueue queue){
         int i=0;
-        int enterSpeed = 3; // number of cars that can enter per minute
+        int enterSpeed = 6; // number of cars that can enter per minute
         // Remove car from the front of the queue and assign to a parking space.
         while (queue.carsInQueue()>0 && this.getNumberOfOpenSpots() > 0 && i < enterSpeed) {
             Car car = queue.removeCar();
@@ -252,28 +262,20 @@ public class CarPark extends AbstractModel{
     private void carsLeaving(){
         // Let cars leave.
         int i=0;
-        int exitSpeed = 5; // number of cars that can leave per minute
+        int exitSpeed = 6; // number of cars that can leave per minute
         while (exitCarQueue.carsInQueue()>0 && i < exitSpeed){
             exitCarQueue.removeCar();
             i++;
         }
     }
 
-    private int getNumberOfCars(int weekDay, int saturday){
+    private int getNumberOfCars(int AvgArrivalsPH){
         Random random = new Random();
-
-        // Get the average number of cars that arrive per hour.
-        int averageNumberOfCarsPerHour;
-        if (day != 5) {
-            averageNumberOfCarsPerHour = weekDay;
-        } else {
-            averageNumberOfCarsPerHour = saturday;
-        }
 
 
         // Calculate the number of cars that arrive this minute.
-        double standardDeviation = averageNumberOfCarsPerHour * 0.3;
-        double numberOfCarsPerHour = averageNumberOfCarsPerHour + random.nextGaussian() * standardDeviation;
+        double standardDeviation = AvgArrivalsPH * 0.3;
+        double numberOfCarsPerHour = AvgArrivalsPH + random.nextGaussian() * standardDeviation;
         return (int)Math.round(numberOfCarsPerHour / 60);
     }
 
@@ -282,12 +284,16 @@ public class CarPark extends AbstractModel{
         switch(type) {
             case AD_HOC:
                 for (int i = 0; i < numberOfCars; i++) {
-                    entranceCarQueue.addCar(new AdHocCar());
+                    if (entranceCarQueue.carsInQueue() < 3) {
+                        entranceCarQueue.addCar(new AdHocCar());
+                    }
                 }
                 break;
             case PASS:
                 for (int i = 0; i < numberOfCars; i++) {
-                    entrancePassQueue.addCar(new ParkingPassCar());
+                    if (entrancePassQueue.carsInQueue() < 3) {
+                        entrancePassQueue.addCar(new ParkingPassCar());
+                    }
                 }
                 break;
         }
