@@ -49,7 +49,7 @@ public class CarPark extends AbstractModel{
             }
         }
 
-        days = new String[] {"Monday", "Thuesday", "Wednesday", "Thirsday", "Friday", "Saturday", "Sunday", ""};
+        days = new String[] {"Monday", "Thuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday", ""};
     }
 
     /**
@@ -198,25 +198,32 @@ public class CarPark extends AbstractModel{
 
     private void carsArriving(){
         int numberOfCars;
-        if (day < 5) {
-            numberOfCars = getNumberOfCars(100);
-            addArrivingCars(numberOfCars, AD_HOC);
-            numberOfCars = getNumberOfCars(50);
-            addArrivingCars(numberOfCars, PASS);
-            //number of cars arriving on a weekday
-        } else if (day == 5) {
-            numberOfCars = getNumberOfCars(200);
-            addArrivingCars(numberOfCars, AD_HOC);
-            numberOfCars = getNumberOfCars(20);
-            addArrivingCars(numberOfCars, PASS);
-            //number of cars arriving on a saturday
-        } else {
-            numberOfCars = getNumberOfCars(40);
-            addArrivingCars(numberOfCars, AD_HOC);
-            numberOfCars = getNumberOfCars(5);
-            addArrivingCars(numberOfCars, PASS);
-            //number of cars arriving on a sunday
+        int numberOfPassCars;
+        //check weather it's a holiday/festival or not
+        switch (dayOfYear) {
+            case 339:
+                numberOfCars = getNumberOfCars(300);
+                numberOfPassCars = getNumberOfCars(100);
+                //number of cars arriving on a weekday
+                break;
+            default:
+            if (day < 5) {
+                numberOfCars = getNumberOfCars(100);
+                numberOfPassCars = getNumberOfCars(50);
+                //number of cars arriving on a weekday
+            } else if (day == 5) {
+                numberOfCars = getNumberOfCars(200);
+                numberOfPassCars = getNumberOfCars(20);
+                //number of cars arriving on a saturday
+            } else {
+                numberOfCars = getNumberOfCars(40);
+                numberOfPassCars = getNumberOfCars(5);
+                //number of cars arriving on a sunday
+            }
+            break;
         }
+        addArrivingCars(numberOfCars, AD_HOC);
+        addArrivingCars(numberOfPassCars, PASS);
     }
 
     private void carsEntering(CarQueue queue){
