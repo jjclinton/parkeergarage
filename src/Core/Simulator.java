@@ -104,8 +104,8 @@ public class Simulator {
             //carParkModel.tick();
       //  }
     }
-    public static void runSteps() {
-        for (int i = 0; i < 100; i++) {
+    public static void runSteps(int steps) {
+        for (int i = 0; i < steps; i++) {
             carParkModel.tick();
         }
     }

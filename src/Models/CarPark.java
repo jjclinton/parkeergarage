@@ -141,6 +141,7 @@ public class CarPark extends AbstractModel{
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+
         handleEntrance();
     }
 

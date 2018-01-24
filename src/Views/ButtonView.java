@@ -42,7 +42,9 @@ public class ButtonView extends AbstractView {
             @Override
             public void actionPerformed(ActionEvent e) {
                 statusLabel.setText("1 stap per seconde.");
-                (CarPark.steps) = 1000;
+                //(CarPark.steps) = 1000;
+                Simulator.tabbedPane.setSelectedIndex(0);
+                Simulator.runSteps(1);
             }
         });
 
@@ -52,7 +54,15 @@ public class ButtonView extends AbstractView {
                 statusLabel.setText("100 stappen per seconde.");
                 //(CarPark.steps) = 10;
                 Simulator.tabbedPane.setSelectedIndex(0);
-                Simulator.runSteps();
+                new java.util.Timer().schedule(
+                        new java.util.TimerTask() {
+                            @Override
+                            public void run() {
+                                Simulator.runSteps(100);
+                            }
+                        },
+                        1
+                );
             }
         });
 
