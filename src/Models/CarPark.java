@@ -1,5 +1,7 @@
 package Models;
 
+import javax.swing.*;
+import java.lang.reflect.Array;
 import java.util.HashMap;
 import java.util.Random;
 
@@ -17,9 +19,11 @@ public class CarPark extends AbstractModel{
     private static CarQueue paymentCarQueue;
     private static CarQueue exitCarQueue;
 
-    private int day = 0;
+    private int dayOfYear = 0;
+    private static int day = 0;
     private int hour = 0;
     private int minute = 0;
+    private static String[] days;
 
     // hashmap with all the locations for the cars
     private static HashMap<Location, Car> cars;
@@ -44,6 +48,8 @@ public class CarPark extends AbstractModel{
                 }
             }
         }
+
+        days = new String[] {"Monday", "Thuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday", ""};
     }
 
     /**
@@ -131,7 +137,7 @@ public class CarPark extends AbstractModel{
         handleExit();
         updateViews();
         // Pause.
-        int tickPause = 100;
+        int tickPause = 4;
         try {
             Thread.sleep(tickPause);
         } catch (InterruptedException e) {
@@ -153,16 +159,22 @@ public class CarPark extends AbstractModel{
     private void advanceTime(){
         // Advance the time by one minute.
         minute++;
-        while (minute > 59) {
+        if (minute > 59) {
             minute -= 60;
             hour++;
+            System.out.println(hour);
         }
-        while (hour > 23) {
+        if (hour > 23) {
             hour -= 24;
             day++;
+            dayOfYear++;
+            System.out.println(days[day]);
         }
-        while (day > 6) {
+        if (day > 6) {
             day -= 7;
+        }
+        if (dayOfYear > 364) {
+            dayOfYear = 0;
         }
 
     }
@@ -185,21 +197,38 @@ public class CarPark extends AbstractModel{
     }
 
     private void carsArriving(){
-        int weekDayArrivals= 100; // average number of arriving cars per hour
-        int weekendArrivals = 200; // average number of arriving cars per hour
-        int weekDayPassArrivals= 50; // average number of arriving cars per hour
-        int weekendPassArrivals = 5; // average number of arriving cars per hour
-
-
-        int numberOfCars = getNumberOfCars(weekDayArrivals, weekendArrivals);
+        int numberOfCars;
+        int numberOfPassCars;
+        //check weather it's a holiday/festival or not
+        switch (dayOfYear) {
+            case 339:
+                numberOfCars = getNumberOfCars(300);
+                numberOfPassCars = getNumberOfCars(100);
+                //number of cars arriving on a weekday
+                break;
+            default:
+            if (day < 5) {
+                numberOfCars = getNumberOfCars(100);
+                numberOfPassCars = getNumberOfCars(50);
+                //number of cars arriving on a weekday
+            } else if (day == 5) {
+                numberOfCars = getNumberOfCars(200);
+                numberOfPassCars = getNumberOfCars(20);
+                //number of cars arriving on a saturday
+            } else {
+                numberOfCars = getNumberOfCars(40);
+                numberOfPassCars = getNumberOfCars(5);
+                //number of cars arriving on a sunday
+            }
+            break;
+        }
         addArrivingCars(numberOfCars, AD_HOC);
-        numberOfCars = getNumberOfCars(weekDayPassArrivals, weekendPassArrivals);
-        addArrivingCars(numberOfCars, PASS);
+        addArrivingCars(numberOfPassCars, PASS);
     }
 
     private void carsEntering(CarQueue queue){
         int i=0;
-        int enterSpeed = 3; // number of cars that can enter per minute
+        int enterSpeed = 6; // number of cars that can enter per minute
         // Remove car from the front of the queue and assign to a parking space.
         while (queue.carsInQueue()>0 && this.getNumberOfOpenSpots() > 0 && i < enterSpeed) {
             Car car = queue.removeCar();
@@ -240,24 +269,20 @@ public class CarPark extends AbstractModel{
     private void carsLeaving(){
         // Let cars leave.
         int i=0;
-        int exitSpeed = 5; // number of cars that can leave per minute
+        int exitSpeed = 6; // number of cars that can leave per minute
         while (exitCarQueue.carsInQueue()>0 && i < exitSpeed){
             exitCarQueue.removeCar();
             i++;
         }
     }
 
-    private int getNumberOfCars(int weekDay, int weekend){
+    private int getNumberOfCars(int AvgArrivalsPH){
         Random random = new Random();
 
-        // Get the average number of cars that arrive per hour.
-        int averageNumberOfCarsPerHour = day < 5
-                ? weekDay
-                : weekend;
 
         // Calculate the number of cars that arrive this minute.
-        double standardDeviation = averageNumberOfCarsPerHour * 0.3;
-        double numberOfCarsPerHour = averageNumberOfCarsPerHour + random.nextGaussian() * standardDeviation;
+        double standardDeviation = AvgArrivalsPH * 0.3;
+        double numberOfCarsPerHour = AvgArrivalsPH + random.nextGaussian() * standardDeviation;
         return (int)Math.round(numberOfCarsPerHour / 60);
     }
 
@@ -266,12 +291,16 @@ public class CarPark extends AbstractModel{
         switch(type) {
             case AD_HOC:
                 for (int i = 0; i < numberOfCars; i++) {
-                    entranceCarQueue.addCar(new AdHocCar());
+                    if (entranceCarQueue.carsInQueue() < 3) {
+                        entranceCarQueue.addCar(new AdHocCar());
+                    }
                 }
                 break;
             case PASS:
                 for (int i = 0; i < numberOfCars; i++) {
-                    entrancePassQueue.addCar(new ParkingPassCar());
+                    if (entrancePassQueue.carsInQueue() < 3) {
+                        entrancePassQueue.addCar(new ParkingPassCar());
+                    }
                 }
                 break;
         }
@@ -339,5 +368,9 @@ public class CarPark extends AbstractModel{
     private void carLeavesSpot(Car car){
         this.removeCarAt(car.getLocation());
         exitCarQueue.addCar(car);
+    }
+
+    public static String getCurrentDay() {
+        return days[day];
     }
 }
