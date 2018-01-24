@@ -2,6 +2,7 @@ package Models;
 
 import java.util.HashMap;
 import java.util.Random;
+import java.util.Timer;
 
 public class CarPark extends AbstractModel{
     private static final String AD_HOC = "1";
@@ -132,8 +133,9 @@ public class CarPark extends AbstractModel{
         forward();
         handleExit();
         updateViews();
-        // Pause.
-        int tickPause = steps;
+        //pause
+        //TODO: replace number with steps
+        int tickPause = 100;
         try {
             Thread.sleep(tickPause);
         } catch (InterruptedException e) {

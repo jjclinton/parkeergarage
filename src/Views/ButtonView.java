@@ -1,4 +1,5 @@
 package Views;
+import Core.Simulator;
 import Models.CarPark;
 import java.awt.event.*;
 import javax.swing.*;
@@ -10,8 +11,12 @@ public class ButtonView extends AbstractView {
 
     private JLabel statusLabel;
 
+    private CarPark carParkModel;
+
     public ButtonView(CarPark model) {
         super(model);
+
+        carParkModel = new CarPark(3, 6, 30);
 
         statusLabel = new JLabel(" ");
         statusLabel.setSize(350,25);
@@ -45,7 +50,9 @@ public class ButtonView extends AbstractView {
             @Override
             public void actionPerformed(ActionEvent e) {
                 statusLabel.setText("100 stappen per seconde.");
-                (CarPark.steps) = 10;
+                //(CarPark.steps) = 10;
+                Simulator.tabbedPane.setSelectedIndex(0);
+                Simulator.runSteps();
             }
         });
 
@@ -53,7 +60,7 @@ public class ButtonView extends AbstractView {
             @Override
             public void actionPerformed(ActionEvent e) {
                 statusLabel.setText(" ");
-                (CarPark.steps) = 100;
+                //(CarPark.steps) = 100;
             }
         });
 

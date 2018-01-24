@@ -13,7 +13,7 @@ import javax.swing.*;
 
 public class Simulator {
 
-    private CarPark carParkModel;
+    private static CarPark carParkModel;
 
     private AbstractController carParkController;
 
@@ -21,6 +21,8 @@ public class Simulator {
     private AbstractView staticsView;
     private AbstractView buttonView;
     private AbstractView settingsView;
+
+    public static JTabbedPane tabbedPane;
 
     public Simulator() {
         /**
@@ -53,7 +55,7 @@ public class Simulator {
         screen.setLayout(null);
 
 
-        JTabbedPane tabbedPane = new JTabbedPane();
+        tabbedPane = new JTabbedPane();
         tabbedPane.setSize(1200, 750);
 
         /**
@@ -98,9 +100,13 @@ public class Simulator {
         /**
          * Start running the simulation with 20 steps
          */
-        for (int i = 0; i < 300000; i++) {
+       // for (int i = 0; i < 100; i++) {
+            //carParkModel.tick();
+      //  }
+    }
+    public static void runSteps() {
+        for (int i = 0; i < 100; i++) {
             carParkModel.tick();
         }
     }
-
 }
