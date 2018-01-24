@@ -1,5 +1,8 @@
 package Models;
 
+import Models.AbstractModel;
+import Models.Location;
+
 import java.awt.*;
 
 public abstract class Car extends AbstractModel

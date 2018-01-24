@@ -27,7 +27,7 @@ public class Simulator {
          * Create the model, Views and Controllers that
          * we need for the Car Park Simulation
          */
-        this.carParkModel = new CarPark(3, 6, 30);
+        this.carParkModel = new CarPark(3, 6, 30, 200);
 
         this.carParkController = new Controller(carParkModel);
 
