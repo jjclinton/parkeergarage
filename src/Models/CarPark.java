@@ -214,20 +214,20 @@ public class CarPark extends AbstractModel{
                 //number of cars arriving on a weekday
                 break;
             default:
-            if (day < 5) {
-                numberOfCars = getNumberOfCars(100);
-                numberOfPassCars = getNumberOfCars(50);
-                //number of cars arriving on a weekday
-            } else if (day == 5) {
-                numberOfCars = getNumberOfCars(200);
-                numberOfPassCars = getNumberOfCars(20);
-                //number of cars arriving on a saturday
-            } else {
-                numberOfCars = getNumberOfCars(40);
-                numberOfPassCars = getNumberOfCars(5);
-                //number of cars arriving on a sunday
-            }
-            break;
+                if (day < 5) {
+                    numberOfCars = getNumberOfCars(100);
+                    numberOfPassCars = getNumberOfCars(50);
+                    //number of cars arriving on a weekday
+                } else if (day == 5) {
+                    numberOfCars = getNumberOfCars(200);
+                    numberOfPassCars = getNumberOfCars(20);
+                    //number of cars arriving on a saturday
+                } else {
+                    numberOfCars = getNumberOfCars(40);
+                    numberOfPassCars = getNumberOfCars(5);
+                    //number of cars arriving on a sunday
+                }
+                break;
         }
         addArrivingCars(numberOfCars, AD_HOC);
         addArrivingCars(numberOfPassCars, PASS);

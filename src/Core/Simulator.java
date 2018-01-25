@@ -6,21 +6,23 @@ import Models.CarPark;
 import Views.AbstractView;
 import Views.CarParkView;
 import Views.SettingsView;
+import Views.ButtonView;
 import Views.StaticsView;
 
 import javax.swing.*;
 
 public class Simulator {
 
-    private CarPark carParkModel;
+    private static CarPark carParkModel;
 
     private AbstractController carParkController;
 
     private AbstractView carParkView;
     private AbstractView staticsView;
+    private AbstractView buttonView;
     private AbstractView settingsView;
 
-
+    public static JTabbedPane tabbedPane;
 
     public Simulator() {
         /**
@@ -37,6 +39,9 @@ public class Simulator {
         this.settingsView = new SettingsView(carParkModel);
         settingsView.setBounds(0, 0, 1200, 600);
 
+        this.buttonView = new ButtonView(carParkModel);
+        buttonView.setBounds(0, 0, 1200, 600);
+
         this.staticsView = new StaticsView(carParkModel);
         staticsView.setBounds(0, 0, 1200, 600);
 
@@ -50,7 +55,7 @@ public class Simulator {
         screen.setLayout(null);
 
 
-        JTabbedPane tabbedPane = new JTabbedPane();
+        tabbedPane = new JTabbedPane();
         tabbedPane.setSize(1200, 750);
 
         /**
@@ -64,6 +69,9 @@ public class Simulator {
         staticsPanel.setLayout(null);
         staticsPanel.add(staticsView);
 
+        JComponent buttonPanel = new JPanel(false);
+        buttonPanel.setLayout(null);
+        buttonPanel.add(buttonView);
 
         JComponent settingsPanel = new JPanel(false);
         settingsPanel.setLayout(null);
@@ -74,6 +82,7 @@ public class Simulator {
          */
         tabbedPane.addTab("Simulator", mainPanel);
         tabbedPane.addTab("Statics", staticsPanel);
+        tabbedPane.addTab("Button", buttonPanel);
         tabbedPane.addTab("Settings", settingsPanel);
 
         screen.getContentPane().add(tabbedPane);
@@ -91,9 +100,13 @@ public class Simulator {
         /**
          * Start running the simulation with 20 steps
          */
-        for (int i = 0; i < 300000; i++) {
+       // for (int i = 0; i < 100; i++) {
+            //carParkModel.tick();
+      //  }
+    }
+    public static void runSteps(int steps) {
+        for (int i = 0; i < steps; i++) {
             carParkModel.tick();
         }
     }
-
 }
