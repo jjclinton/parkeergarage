@@ -1,9 +1,11 @@
 package Models;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
 
 public class CarPark extends AbstractModel{
+    private static final Double COST = 2.80;
     private static final String AD_HOC = "1";
     private static final String PASS = "2";
 
@@ -19,7 +21,8 @@ public class CarPark extends AbstractModel{
 
     private static HashMap<Location, Boolean> carsReserved;
 
-
+    private static Double profitTotal;
+    private static Double profitToday;
     private int dayOfYear = 0;
     private static int day = 0;
     private static int hour = 0;
@@ -38,6 +41,9 @@ public class CarPark extends AbstractModel{
         this.entrancePassQueue = new CarQueue();
         this.paymentCarQueue = new CarQueue();
         this.exitCarQueue = new CarQueue();
+
+        this.profitToday = 0.0;
+        this.profitTotal = 0.0;
 
         cars = new HashMap<>();
         carsReserved = new HashMap<>();
@@ -101,23 +107,19 @@ public class CarPark extends AbstractModel{
         return cars.get(location);
     }
 
-    private int getNumberOfOpenSpots(){
-        return this.numberOfOpenSpots;
-    }
-
-    public static CarQueue getEntrancePaymentQueue() {
+    public CarQueue getEntrancePaymentQueue() {
         return paymentCarQueue;
     }
 
-    public static CarQueue getEntranceExitQueue() {
+    public CarQueue getEntranceExitQueue() {
         return exitCarQueue;
     }
 
-    public static CarQueue getEntranceCarQueue() {
+    public CarQueue getEntranceCarQueue() {
         return entranceCarQueue;
     }
 
-    public static CarQueue getEntrancePassQueue() {
+    public CarQueue getEntrancePassQueue() {
         return entrancePassQueue;
     }
 
@@ -140,10 +142,16 @@ public class CarPark extends AbstractModel{
 
     public void tick() {
         advanceTime();
-        updateViews();
-
         forward();
-        handleExit();
+        
+        carsReadyToLeave();
+        carsPaying();
+        carsLeaving();
+
+        carsArriving();
+        carsEntering(entrancePassQueue);
+        carsEntering(entranceCarQueue);
+
         // Pause.
         int tickPause = 4;
         try {
@@ -151,7 +159,6 @@ public class CarPark extends AbstractModel{
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        handleEntrance();
     }
 
     private void forward(){
@@ -175,6 +182,9 @@ public class CarPark extends AbstractModel{
             hour -= 24;
             day++;
             dayOfYear++;
+
+            profitTotal = profitTotal + profitToday;
+            profitToday = 0.0;
         }
         if (day > 6) {
             day -= 7;
@@ -182,19 +192,6 @@ public class CarPark extends AbstractModel{
         if (dayOfYear > 364) {
             dayOfYear = 0;
         }
-
-    }
-
-    private void handleEntrance(){
-        carsArriving();
-        carsEntering(entrancePassQueue);
-        carsEntering(entranceCarQueue);
-    }
-
-    private void handleExit(){
-        carsReadyToLeave();
-        carsPaying();
-        carsLeaving();
     }
 
     private void updateViews(){
@@ -233,14 +230,17 @@ public class CarPark extends AbstractModel{
     }
 
     private void carsEntering(CarQueue queue){
-        int i=0;
-        int enterSpeed = 6; // number of cars that can enter per minute
+        int enterSpeed = 4; // number of cars that can enter per minute
         // Remove car from the front of the queue and assign to a parking space.
-        while (queue.carsInQueue()>0 && this.getNumberOfOpenSpots() > 0 && i < enterSpeed) {
+        for (int i = 0; i < enterSpeed; i++) {
             Car car = queue.removeCar();
+
+            if(car == null){
+                break;
+            }
+
             Location freeLocation = this.getFirstFreeLocation(car);
             this.setCarAt(freeLocation, car);
-            i++;
         }
     }
 
@@ -248,12 +248,12 @@ public class CarPark extends AbstractModel{
     private void carsReadyToLeave(){
         // Add leaving cars to the payment queue.
         Car car = this.getFirstLeavingCar();
-        while (car!=null) {
+
+        while (car != null) {
             if (car.getHasToPay()){
                 car.setIsPaying(true);
                 paymentCarQueue.addCar(car);
-            }
-            else {
+            } else {
                 carLeavesSpot(car);
             }
             car = this.getFirstLeavingCar();
@@ -262,29 +262,38 @@ public class CarPark extends AbstractModel{
 
     private void carsPaying(){
         // Let cars pay.
-        int i=0;
         int paymentSpeed = 7; // number of cars that can pay per minute
-        while (paymentCarQueue.carsInQueue()>0 && i < paymentSpeed){
+
+        for (int i = 0; i < paymentSpeed; i++) {
             Car car = paymentCarQueue.removeCar();
-            // TODO Handle payment.
+
+            if (car == null) {
+                break;
+            }
+
+            if(car.getHasToPay()){
+                profitToday = profitToday + (COST * (car.getMinutesParked() /60));
+            }
+
             carLeavesSpot(car);
-            i++;
         }
     }
 
     private void carsLeaving(){
         // Let cars leave.
-        int i=0;
         int exitSpeed = 6; // number of cars that can leave per minute
-        while (exitCarQueue.carsInQueue()>0 && i < exitSpeed){
-            exitCarQueue.removeCar();
-            i++;
+
+        for (int i = 0; i < exitSpeed; i++) {
+            Car car = exitCarQueue.removeCar();
+
+            if (car == null) {
+                break;
+            }
         }
     }
 
     private int getNumberOfCars(int AvgArrivalsPH){
         Random random = new Random();
-
 
         // Calculate the number of cars that arrive this minute.
         double standardDeviation = AvgArrivalsPH * 0.3;
@@ -369,6 +378,7 @@ public class CarPark extends AbstractModel{
                 for (int place = 0; place < getNumberOfPlaces(); place++) {
                     Location location = new Location(floor, row, place);
                     Car car = cars.get(location);
+
                     if (car != null && car.getMinutesLeft() <= 0 && !car.getIsPaying()) {
                         return car;
                     }
@@ -387,13 +397,13 @@ public class CarPark extends AbstractModel{
         return days[day];
     }
 
-    public static int getCurrentHour(){ return hour; }
+    public int getCurrentHour(){ return hour; }
 
     public static Boolean isLocationReserved(Location location){
         return carsReserved.get(location) != null;
     }
 
-    public static int getTotalCars() {
+    public int getTotalCars() {
         int total = 0;
         for(Location location : cars.keySet()) {
             if (cars.get(location) != null) {
@@ -402,5 +412,21 @@ public class CarPark extends AbstractModel{
         }
 
         return total;
+    }
+
+    public Double getTodayProfit(){
+        return profitToday;
+    }
+
+    public int getCurrentDayOfYear(){
+       return dayOfYear;
+    }
+
+    public int getCurrentIntDay(){
+        return day;
+    }
+
+    public int getMinute(){
+        return minute;
     }
 }

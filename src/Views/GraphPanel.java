@@ -17,9 +17,6 @@ import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
 public class GraphPanel extends JPanel {
-
-    private int width = 800;
-    private int heigth = 400;
     private int padding = 25;
     private int labelPadding = 25;
     private Color lineColor = new Color(44, 102, 230, 180);
@@ -29,8 +26,10 @@ public class GraphPanel extends JPanel {
     private int pointWidth = 4;
     private int numberYDivisions = 10;
     private List<Double> datas;
+    private String title;
 
-    public GraphPanel(List<Double> datas) {
+    public GraphPanel(List<Double> datas, String title) {
+        this.title = title;
         this.datas = datas;
     }
 
@@ -39,6 +38,8 @@ public class GraphPanel extends JPanel {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g;
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
+        g2.drawString(this.title, 50, 10);
 
         double xScale = ((double) getWidth() - (2 * padding) - labelPadding) / (datas.size() - 1);
         double yScale = ((double) getHeight() - 2 * padding - labelPadding) / (getMaxData() - getMinData());

@@ -9,14 +9,25 @@ import java.util.List;
 import java.util.Random;
 
 public class StaticsView extends AbstractView {
-    private JLabel entranceCarQueueLabel;
-    private JLabel entrancePassQueueLabel;
-    private JLabel paymentCarQueueLabel;
-    private JLabel exitCarQueueLabel;
-    private GraphPanel carsParkedGraph;
-    private ArrayList<Double> hourData;
-    private int previousHour;
+    private CarPark carPark;
 
+    private GraphPanel entranceCarQueueGraph;
+    private ArrayList<Double> entranceCarQueueGraphData;
+
+    private GraphPanel entrancePassQueueGraph;
+    private ArrayList<Double> entrancePassQueueGraphData;
+
+    private GraphPanel paymentCarQueueGraph;
+    private ArrayList<Double> paymentCarQueueGraphData;
+
+    private GraphPanel exitCarQueueGraph;
+    private ArrayList<Double> exitCarQueueGraphData;
+
+    private GraphPanel carsParkedGraph;
+    private ArrayList<Double> carsParkedGraphData;
+
+    private GraphPanel profitGraph;
+    private ArrayList<Double> profitGraphData;
 
     /**
      * Constructor of CarParkView that expects a model belonging to this Views
@@ -26,71 +37,95 @@ public class StaticsView extends AbstractView {
     public StaticsView(CarPark model) {
         super(model);
 
-        hourData = new ArrayList<>();
+        carPark = model;
 
+        carsParkedGraphData = new ArrayList<>();
         for(int hour = 0; hour <= 23; hour++){
-            hourData.add(0.0);
+            carsParkedGraphData.add(0.0);
         }
+        carsParkedGraph = new GraphPanel(carsParkedGraphData, "Total cars parked");
+
+        entranceCarQueueGraphData = new ArrayList<>();
+        entrancePassQueueGraphData = new ArrayList<>();
+        paymentCarQueueGraphData = new ArrayList<>();
+        exitCarQueueGraphData = new ArrayList<>();
+        for(int minute = 0; minute < 60; minute++) {
+            entranceCarQueueGraphData.add(0.0);
+            entrancePassQueueGraphData.add(0.0);
+            paymentCarQueueGraphData.add(0.0);
+            exitCarQueueGraphData.add(0.0);
+        }
+        entranceCarQueueGraph = new GraphPanel(entranceCarQueueGraphData, "Entrance car queue");
+        entrancePassQueueGraph = new GraphPanel(entrancePassQueueGraphData, "Entrance passholders queue");
+        paymentCarQueueGraph = new GraphPanel(paymentCarQueueGraphData, "Payment queue");
+        exitCarQueueGraph = new GraphPanel(exitCarQueueGraphData, "Exit queue");
 
 
-        carsParkedGraph = new GraphPanel(hourData);
+        profitGraphData = new ArrayList<>();
+        for(int day = 0; day <= 6; day++){
+            profitGraphData.add(0.0);
+        }
+        profitGraph = new GraphPanel(profitGraphData, "Profit per day");
 
         GridLayout grid = new GridLayout(0,2);
-
         setLayout(grid);
-
         add(carsParkedGraph);
+        add(profitGraph);
 
-        entranceCarQueueLabel = new JLabel("Entrance car queue: ");
-        entranceCarQueueLabel.setSize(500, 15);
-        entranceCarQueueLabel.setLocation(0, 0);
-        add(entranceCarQueueLabel);
-
-
-        entrancePassQueueLabel = new JLabel("Entrance passholders car queue: ");
-        entrancePassQueueLabel.setSize(500, 15);
-        entrancePassQueueLabel.setLocation(0, 15);
-        add(entrancePassQueueLabel);
-
-
-        paymentCarQueueLabel = new JLabel("Payment car queue: ");
-        paymentCarQueueLabel.setSize(500, 15);
-        paymentCarQueueLabel.setLocation(0, 30);
-        add(paymentCarQueueLabel);
-
-        exitCarQueueLabel = new JLabel("Exit car queue: ");
-        exitCarQueueLabel.setSize(500, 15);
-        exitCarQueueLabel.setLocation(0, 45);
-        add(exitCarQueueLabel);
+        add(entranceCarQueueGraph);
+        add(entrancePassQueueGraph);
+        add(paymentCarQueueGraph);
+        add(exitCarQueueGraph);
     }
 
     @Override
     public void updateView() {
-        int entranceCarQueue = CarPark.getEntranceCarQueue().carsInQueue();
-        entranceCarQueueLabel.setText("Entrance car queue: " + entranceCarQueue);
+        int currentHour = carPark.getCurrentHour();
+        int minute = carPark.getMinute();
+        int currentDay = carPark.getCurrentIntDay();
 
-        int entrancePassQueue = CarPark.getEntrancePassQueue().carsInQueue();
-        entrancePassQueueLabel.setText("Entrance passholders car queue: " + entrancePassQueue);
+        double totalParkedCars = (double) carPark.getTotalCars();
+        if (carsParkedGraphData != null) {
+            carsParkedGraphData.set(currentHour, totalParkedCars);
+            carsParkedGraph.setData(carsParkedGraphData);
+        }
 
-        int paymentQueue = CarPark.getEntrancePaymentQueue().carsInQueue();
-        paymentCarQueueLabel.setText("Payment car queue: " + paymentQueue);
+        double entranceCarQueue = (double) carPark.getEntranceCarQueue().carsInQueue();
 
-        int exitQueue = CarPark.getEntranceExitQueue().carsInQueue();
-        exitCarQueueLabel.setText("Exit car queue: " + exitQueue);
+        if (entranceCarQueueGraph != null) {
+            entranceCarQueueGraphData.set(minute, entranceCarQueue);
+            entranceCarQueueGraph.setData(entranceCarQueueGraphData);
+        }
 
-        int todayHour = CarPark.getCurrentHour();
+        double entrancePassQueue = (double) carPark.getEntrancePassQueue().carsInQueue();
 
-        double total = (double) CarPark.getTotalCars();
+        if (entrancePassQueueGraph != null) {
+            entrancePassQueueGraphData.set(minute, entrancePassQueue);
+            entrancePassQueueGraph.setData(entrancePassQueueGraphData);
+        }
 
-        if (hourData != null) {
-            hourData.set(todayHour, (double) total);
+        double paymentQueue = (double) carPark.getEntrancePaymentQueue().carsInQueue();
 
-            carsParkedGraph.setData(hourData);
+        if (paymentCarQueueGraph != null) {
+            paymentCarQueueGraphData.set(minute, paymentQueue);
+            paymentCarQueueGraph.setData(paymentCarQueueGraphData);
+        }
+
+        double exitQueue = (double) carPark.getEntranceExitQueue().carsInQueue();
+
+        if (exitCarQueueGraph != null) {
+            exitCarQueueGraphData.set(minute, exitQueue);
+            exitCarQueueGraph.setData(exitCarQueueGraphData);
         }
 
 
+        double totalProfit = carPark.getTodayProfit();
 
+        if (profitGraphData != null && totalProfit != 0.0) {
+            profitGraphData.set(currentDay, totalProfit);
 
+            profitGraph.setData(profitGraphData);
+        }
 
         setVisible(true);
     }
