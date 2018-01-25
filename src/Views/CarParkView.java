@@ -9,7 +9,6 @@ public class CarParkView extends AbstractView
 {
     // image of the car park
     private Image carParkImage;
-    private Dimension size;
     private JLabel dayLabel;
 
     /**
@@ -19,7 +18,6 @@ public class CarParkView extends AbstractView
      */
     public CarParkView(CarPark model) {
         super(model);
-        this.size = new Dimension(880, 330);
         //show current day
         dayLabel = new JLabel("Current day: " + CarPark.getCurrentDay());
         dayLabel.setSize(500, 15);
@@ -27,23 +25,13 @@ public class CarParkView extends AbstractView
         add(dayLabel);
     }
 
-    /**
-     * Overriden. The car park Views component needs to be redisplayed. Copy the
-     * internal image to screen.
-     */
+    @Override
     public void paintComponent(Graphics g) {
         if (carParkImage == null) {
             return;
         }
 
-        Dimension currentSize = getSize();
-        if (size.equals(currentSize)) {
-            g.drawImage(carParkImage, 0, 0, null);
-        }
-        else {
-            // Rescale the previous image.
-            g.drawImage(carParkImage, 0, 0, currentSize.width, currentSize.height, null);
-        }
+        g.drawImage(carParkImage, 0, 0, null);
     }
 
     @Override
@@ -51,8 +39,11 @@ public class CarParkView extends AbstractView
         int floorNrX = 150;
         //show current day
         currentDay();
+
+        Dimension currentSize = getSize();
+
         // create a new car park image if the size has changed.
-        carParkImage = createImage(size.width, size.height);
+        carParkImage = createImage(currentSize.width, currentSize.height);
 
         Graphics graphics = carParkImage.getGraphics();
 

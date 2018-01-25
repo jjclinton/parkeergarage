@@ -5,7 +5,7 @@ import Controllers.Controller;
 import Models.CarPark;
 import Views.AbstractView;
 import Views.CarParkView;
-import Views.SettingsView;
+import Views.AboutView;
 import Views.ButtonView;
 import Views.StaticsView;
 
@@ -29,14 +29,14 @@ public class Simulator {
          * Create the model, Views and Controllers that
          * we need for the Car Park Simulation
          */
-        this.carParkModel = new CarPark(3, 6, 30, 200);
+        this.carParkModel = new CarPark(3, 6, 30, 75);
 
         this.carParkController = new Controller(carParkModel);
 
         this.carParkView = new CarParkView(carParkModel);
         carParkView.setBounds(0, 0, 1200, 600);
 
-        this.settingsView = new SettingsView(carParkModel);
+        this.settingsView = new AboutView(carParkModel);
         settingsView.setBounds(0, 0, 1200, 600);
 
         this.buttonView = new ButtonView(carParkModel);
