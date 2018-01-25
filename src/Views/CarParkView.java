@@ -66,8 +66,11 @@ public class CarParkView extends AbstractView
                     Car car = CarPark.getCar(location);
                     Color color = Color.WHITE;
 
-                    if(CarPark.isLocationReserved(location)){
+                    if(CarPark.isLocationPassReserved(location)){
                         color = Color.cyan;
+                    }
+                    if (CarPark.isLocationReserved(location)) {
+                        color = Color.pink;
                     }
 
                     if(car != null){
