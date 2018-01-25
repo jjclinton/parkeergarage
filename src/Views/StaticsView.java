@@ -3,12 +3,20 @@ package Views;
 import Models.CarPark;
 
 import javax.swing.*;
+import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
 public class StaticsView extends AbstractView {
     private JLabel entranceCarQueueLabel;
     private JLabel entrancePassQueueLabel;
     private JLabel paymentCarQueueLabel;
     private JLabel exitCarQueueLabel;
+    private GraphPanel carsParkedGraph;
+    private ArrayList<Double> hourData;
+    private int previousHour;
+
 
     /**
      * Constructor of CarParkView that expects a model belonging to this Views
@@ -17,6 +25,21 @@ public class StaticsView extends AbstractView {
      */
     public StaticsView(CarPark model) {
         super(model);
+
+        hourData = new ArrayList<>();
+
+        for(int hour = 0; hour <= 23; hour++){
+            hourData.add(0.0);
+        }
+
+
+        carsParkedGraph = new GraphPanel(hourData);
+
+        GridLayout grid = new GridLayout(0,2);
+
+        setLayout(grid);
+
+        add(carsParkedGraph);
 
         entranceCarQueueLabel = new JLabel("Entrance car queue: ");
         entranceCarQueueLabel.setSize(500, 15);
@@ -55,7 +78,21 @@ public class StaticsView extends AbstractView {
         int exitQueue = CarPark.getEntranceExitQueue().carsInQueue();
         exitCarQueueLabel.setText("Exit car queue: " + exitQueue);
 
+        int todayHour = CarPark.getCurrentHour();
+
+        double total = (double) CarPark.getTotalCars();
+
+        if (hourData != null) {
+            hourData.set(todayHour, (double) total);
+
+            carsParkedGraph.setData(hourData);
+        }
+
+
+
+
 
         setVisible(true);
     }
+
 }

@@ -22,7 +22,7 @@ public class CarPark extends AbstractModel{
 
     private int dayOfYear = 0;
     private static int day = 0;
-    private int hour = 0;
+    private static int hour = 0;
     private int minute = 0;
     private static String[] days;
 
@@ -140,9 +140,10 @@ public class CarPark extends AbstractModel{
 
     public void tick() {
         advanceTime();
+        updateViews();
+
         forward();
         handleExit();
-        updateViews();
         // Pause.
         int tickPause = 4;
         try {
@@ -169,13 +170,11 @@ public class CarPark extends AbstractModel{
         if (minute > 59) {
             minute -= 60;
             hour++;
-            System.out.println(hour);
         }
         if (hour > 23) {
             hour -= 24;
             day++;
             dayOfYear++;
-            System.out.println(days[day]);
         }
         if (day > 6) {
             day -= 7;
@@ -388,7 +387,20 @@ public class CarPark extends AbstractModel{
         return days[day];
     }
 
+    public static int getCurrentHour(){ return hour; }
+
     public static Boolean isLocationReserved(Location location){
         return carsReserved.get(location) != null;
+    }
+
+    public static int getTotalCars() {
+        int total = 0;
+        for(Location location : cars.keySet()) {
+            if (cars.get(location) != null) {
+                total++;
+            }
+        }
+
+        return total;
     }
 }
