@@ -16,7 +16,7 @@ public class ButtonView extends AbstractView {
     public ButtonView(CarPark model) {
         super(model);
 
-        carParkModel = new CarPark(3, 6, 30);
+        carParkModel = model;
 
         statusLabel = new JLabel(" ");
         statusLabel.setSize(350,25);

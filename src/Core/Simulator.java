@@ -5,7 +5,7 @@ import Controllers.Controller;
 import Models.CarPark;
 import Views.AbstractView;
 import Views.CarParkView;
-import Views.SettingsView;
+import Views.AboutView;
 import Views.ButtonView;
 import Views.StaticsView;
 
@@ -36,7 +36,7 @@ public class Simulator {
         this.carParkView = new CarParkView(carParkModel);
         carParkView.setBounds(0, 0, 1200, 600);
 
-        this.settingsView = new SettingsView(carParkModel);
+        this.settingsView = new AboutView(carParkModel);
         settingsView.setBounds(0, 0, 1200, 600);
 
         this.buttonView = new ButtonView(carParkModel);
