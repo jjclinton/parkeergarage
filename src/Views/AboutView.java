@@ -1,5 +1,6 @@
 package Views;
 
+import Controllers.Controller;
 import Models.CarPark;
 
 public class AboutView extends AbstractView {
@@ -9,8 +10,8 @@ public class AboutView extends AbstractView {
      *
      * @param model AbstractModel that belongs to this Views
      */
-    public AboutView(CarPark model) {
-        super(model);
+    public AboutView(CarPark model, Controller controller) {
+        super(model, controller);
     }
 
     @Override

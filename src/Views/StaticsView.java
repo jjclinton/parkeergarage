@@ -1,12 +1,10 @@
 package Views;
 
+import Controllers.Controller;
 import Models.CarPark;
 
-import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
 
 public class StaticsView extends AbstractView {
     private CarPark carPark;
@@ -34,8 +32,8 @@ public class StaticsView extends AbstractView {
      *
      * @param model AbstractModel that belongs to this Views
      */
-    public StaticsView(CarPark model) {
-        super(model);
+    public StaticsView(CarPark model, Controller controller) {
+        super(model, controller);
 
         carPark = model;
 

@@ -1,5 +1,6 @@
 package Views;
 
+import Controllers.Controller;
 import Models.*;
 
 import javax.swing.*;
@@ -16,8 +17,8 @@ public class CarParkView extends AbstractView
      *
      * @param model AbstractModel that belongs to this Views
      */
-    public CarParkView(CarPark model) {
-        super(model);
+    public CarParkView(CarPark model, Controller controller) {
+        super(model, controller);
         //show current day
         dayLabel = new JLabel("Current day: " + CarPark.getCurrentDay());
         dayLabel.setSize(500, 15);

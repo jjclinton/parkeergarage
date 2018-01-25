@@ -2,11 +2,6 @@ package Controllers;
 
 
 import Models.AbstractModel;
-import Models.CarPark;
-
-import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 
 public class Controller extends AbstractController
@@ -19,6 +14,10 @@ public class Controller extends AbstractController
      */
     public Controller(AbstractModel model) {
         super(model);
+    }
+
+    public void actionPerformed(java.awt.event.ActionEvent e){
+
     }
 
 }
