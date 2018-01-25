@@ -1,60 +1,94 @@
 package Views;
-
+import Core.Simulator;
 import Models.CarPark;
-
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.*;
+import javax.swing.*;
 
 public class ButtonView extends AbstractView {
-    private Button button1;
-    private Button button100;
+    private JButton startDefault;
+    private JButton button1;
+    private JButton button100;
 
-    /**
-     * Constructor for objects of class CarPark
-     */
+    private JLabel statusLabel;
+
+    private CarPark carParkModel;
+
     public ButtonView(CarPark model) {
         super(model);
 
-        button1 = new Button();
-        button1.setLabel("1 stap");
+        carParkModel = new CarPark(3, 6, 30);
 
-        button100 = new Button();
-        button100.setLabel("100 stappen");
+        statusLabel = new JLabel(" ");
+        statusLabel.setSize(350,25);
+        statusLabel.setLocation(25, 50);
+        add(statusLabel);
+
+        startDefault = new JButton("Start default");
+        startDefault.setSize(110, 25);
+        startDefault.setLocation(25, 20);
+        add(startDefault);
+
+        button1 = new JButton("1 step");
+        button1.setSize(110, 25);
+        button1.setLocation(275, 20);
+        add(button1);
+
+        button100 = new JButton("100 steps");
+        button100.setSize(110, 25);
+        button100.setLocation(150, 20);
+        add(button100);
 
         button1.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                model.tick();
+                statusLabel.setText("1 step.");
+                Simulator.tabbedPane.setSelectedIndex(0);
+                Simulator.runSteps(1);
             }
         });
 
         button100.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
-                for(int i =0; i < 100; i++){
-                    model.tick();
-                }
+                statusLabel.setText("100 steps.");
+                Simulator.tabbedPane.setSelectedIndex(0);
+                new java.util.Timer().schedule(
+                        new java.util.TimerTask() {
+                            @Override
+                            public void run() {
+                                Simulator.runSteps(100);
+                            }
+                        },
+                        1
+                );
             }
         });
 
-        Container contentPane = getRootPane();
-        setLayout(new GridBagLayout());
-        GridBagConstraints gbc = new GridBagConstraints();
-        gbc.gridwidth = GridBagConstraints.REMAINDER;
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        contentPane.add(button1, gbc);
-        contentPane.add(button100, gbc);
+        startDefault.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                statusLabel.setText("300000 steps");
+                button1.setVisible(false);
+                button100.setVisible(false);
+                Simulator.tabbedPane.setSelectedIndex(0);
+                new java.util.Timer().schedule(
+                        new java.util.TimerTask() {
+                            @Override
+                            public void run() {
+                                Simulator.runSteps(300000);
+                            }
+                        },
+                        1
+                );
+            }
+        });
+
+    }
+
+    @Override
+    public void updateView() {
+
         setVisible(true);
-
-
+        super.updateView();
     }
-
-        /**
-         * Overridden. Tell the GUI manager how big we would like to be.
-         */
-        public Dimension getPreferredSize() {
-            return new Dimension(200, 200);
-        }
-    }
+}
