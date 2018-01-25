@@ -1,20 +1,21 @@
 package Views;
+import Controllers.ButtonController;
 import Core.Simulator;
 import Models.CarPark;
 import java.awt.event.*;
 import javax.swing.*;
 
 public class ButtonView extends AbstractView {
-    private JButton startDefault;
-    private JButton button1;
-    private JButton button100;
+    private static JButton startDefault;
+    private static JButton button1;
+    private static JButton button100;
 
-    private JLabel statusLabel;
+    private static JLabel statusLabel;
 
     private CarPark carParkModel;
 
-    public ButtonView(CarPark model) {
-        super(model);
+    public ButtonView(CarPark model, ActionListener controller) {
+        super(model, controller);
 
         carParkModel = model;
 
@@ -38,57 +39,31 @@ public class ButtonView extends AbstractView {
         button100.setLocation(150, 20);
         add(button100);
 
-        button1.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                statusLabel.setText("1 step.");
-                Simulator.tabbedPane.setSelectedIndex(0);
-                Simulator.runSteps(1);
-            }
-        });
-
-        button100.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                statusLabel.setText("100 steps.");
-                Simulator.tabbedPane.setSelectedIndex(0);
-                new java.util.Timer().schedule(
-                        new java.util.TimerTask() {
-                            @Override
-                            public void run() {
-                                Simulator.runSteps(100);
-                            }
-                        },
-                        1
-                );
-            }
-        });
-
-        startDefault.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                statusLabel.setText("300000 steps");
-                button1.setVisible(false);
-                button100.setVisible(false);
-                Simulator.tabbedPane.setSelectedIndex(0);
-                new java.util.Timer().schedule(
-                        new java.util.TimerTask() {
-                            @Override
-                            public void run() {
-                                Simulator.runSteps(300000);
-                            }
-                        },
-                        1
-                );
-            }
-        });
+        startDefault.addActionListener(controller);
+        button1.addActionListener(controller);
+        button100.addActionListener(controller);
 
     }
 
     @Override
     public void updateView() {
-
         setVisible(true);
         super.updateView();
+    }
+
+    public static void setButtons(String status){
+        switch (status){
+            case "default":
+                statusLabel.setText("300000 step.");
+                button1.setVisible(false);
+                button100.setVisible(false);
+                break;
+            case "1step":
+                statusLabel.setText("1 step.");
+                break;
+            case "100steps":
+                statusLabel.setText("100 steps.");
+                break;
+        }
     }
 }

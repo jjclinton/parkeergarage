@@ -29,6 +29,9 @@ public class CarPark extends AbstractModel{
     private int minute = 0;
     private static String[] days;
 
+    private Boolean state;
+
+
     // hashmap with all the locations for the cars
     private static HashMap<Location, Car> cars;
 
