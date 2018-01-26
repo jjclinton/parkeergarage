@@ -53,6 +53,8 @@ public class Simulator {
         JFrame screen = new JFrame("Car Park Simulation");
         screen.setSize(1200, 750);
         screen.setLayout(null);
+        screen.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
 
 
         tabbedPane = new JTabbedPane();
