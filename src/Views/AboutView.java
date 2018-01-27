@@ -1,21 +1,21 @@
 package Views;
 
+import Controllers.Controller;
 import Models.CarPark;
 
-public class SettingsView extends AbstractView {
+public class AboutView extends AbstractView {
 
     /**
      * Constructor of CarParkView that expects a model belonging to this Views
      *
      * @param model AbstractModel that belongs to this Views
      */
-    public SettingsView(CarPark model) {
-        super(model);
+    public AboutView(CarPark model, Controller controller) {
+        super(model, controller);
     }
 
     @Override
     public void updateView() {
-
         setVisible(true);
         super.updateView();
     }

@@ -1,21 +1,27 @@
 package Views;
+import Controllers.ButtonController;
 import Core.Simulator;
+import Models.AbstractModel;
 import Models.CarPark;
 import java.awt.event.*;
 import javax.swing.*;
 
 public class ButtonView extends AbstractView {
-    private JButton startDefault;
-    private JButton button1;
-    private JButton button100;
+    private static JButton startDefault;
+    private static JButton button1;
+    private static JButton button100;
+    private static JButton reset;
 
-    private JLabel statusLabel;
+    private static JLabel statusLabel;
 
-    public ButtonView(CarPark model) {
-        super(model);
+    private AbstractModel carParkModel;
 
+    public ButtonView(CarPark model, ActionListener controller) {
+        super(model, controller);
 
-        statusLabel = new JLabel(" ");
+        carParkModel = model;
+
+        statusLabel = new JLabel("Start the simulation");
         statusLabel.setSize(350,25);
         statusLabel.setLocation(25, 50);
         add(statusLabel);
@@ -27,56 +33,27 @@ public class ButtonView extends AbstractView {
 
         button1 = new JButton("1 step");
         button1.setSize(110, 25);
-        button1.setLocation(275, 20);
+        button1.setLocation(150, 20);
         add(button1);
 
         button100 = new JButton("100 steps");
         button100.setSize(110, 25);
-        button100.setLocation(150, 20);
+        button100.setLocation(275, 20);
         add(button100);
 
-        button1.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                statusLabel.setText("1 step.");
-                Simulator.tabbedPane.setSelectedIndex(0);
-                Simulator.runSteps(1);
-            }
-        });
+        reset = new JButton("reset");
+        reset.setSize(110, 25);
+        reset.setLocation(400, 20);
+        add(reset);
 
-        button100.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                statusLabel.setText("100 steps.");
-                Simulator.tabbedPane.setSelectedIndex(0);
-                new java.util.Timer().schedule(
-                        new java.util.TimerTask() {
-                            @Override
-                            public void run() {
-                                Simulator.runSteps(100);
-                            }
-                        },
-                        1
-                );
-            }
-        });
+        startDefault.addActionListener(controller);
+        button1.addActionListener(controller);
+        button100.addActionListener(controller);
 
-        startDefault.addActionListener(new ActionListener() {
+        reset.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                statusLabel.setText("300000 steps");
-                button1.setVisible(false);
-                button100.setVisible(false);
-                Simulator.tabbedPane.setSelectedIndex(0);
-                new java.util.Timer().schedule(
-                        new java.util.TimerTask() {
-                            @Override
-                            public void run() {
-                                Simulator.runSteps(300000);
-                            }
-                        },
-                        1
-                );
+                System.exit(0);
             }
         });
 
@@ -84,8 +61,23 @@ public class ButtonView extends AbstractView {
 
     @Override
     public void updateView() {
-
         setVisible(true);
         super.updateView();
+    }
+
+    public static void setButtons(String status){
+        switch (status){
+            case "default":
+                statusLabel.setText("300000 steps.");
+                button1.setVisible(false);
+                button100.setVisible(false);
+                break;
+            case "1step":
+                statusLabel.setText("1 step.");
+                break;
+            case "100steps":
+                statusLabel.setText("100 steps.");
+                break;
+        }
     }
 }

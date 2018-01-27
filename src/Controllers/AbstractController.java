@@ -3,9 +3,8 @@ package Controllers;
 
 import Models.AbstractModel;
 
-import javax.swing.*;
 
-public abstract class AbstractController extends JPanel {
+public abstract class AbstractController implements java.awt.event.ActionListener {
 
     // A Controllers should have a certain instance of the AbstractModel
     protected AbstractModel model;
@@ -17,4 +16,6 @@ public abstract class AbstractController extends JPanel {
     public AbstractController(AbstractModel model) {
         this.model = model;
     }
+
+
 }

@@ -1,8 +1,5 @@
 package Models;
 
-import Models.AbstractModel;
-import Models.Location;
-
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Stack;
@@ -12,6 +9,7 @@ public abstract class Car extends AbstractModel
 
     private Location location;
     private int minutesLeft;
+    private int minutesParked;
     private boolean isPaying;
     private boolean hasToPay;
     private int reservationTime;
@@ -36,7 +34,12 @@ public abstract class Car extends AbstractModel
     }
 
     public void setMinutesLeft(int minutesLeft) {
+        this.minutesParked = minutesLeft;
         this.minutesLeft = minutesLeft;
+    }
+
+    public int getMinutesParked() {
+        return minutesParked;
     }
 
     public boolean getIsPaying() {
