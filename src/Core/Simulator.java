@@ -1,11 +1,12 @@
 package Core;
 
 import Controllers.AbstractController;
+import Controllers.ButtonController;
 import Controllers.Controller;
 import Models.CarPark;
 import Views.AbstractView;
 import Views.CarParkView;
-import Views.SettingsView;
+import Views.AboutView;
 import Views.ButtonView;
 import Views.StaticsView;
 
@@ -14,8 +15,6 @@ import javax.swing.*;
 public class Simulator {
 
     private static CarPark carParkModel;
-
-    private AbstractController carParkController;
 
     private AbstractView carParkView;
     private AbstractView staticsView;
@@ -30,20 +29,21 @@ public class Simulator {
          * Create the model, Views and Controllers that
          * we need for the Car Park Simulation
          */
-        this.carParkModel = new CarPark(3, 6, 30, 200);
+        this.carParkModel = new CarPark(3, 6, 30, 75);
 
-        this.carParkController = new Controller(carParkModel);
+        Controller carParkController = new Controller(carParkModel);
+        ButtonController buttonController = new ButtonController(carParkModel);
 
-        this.carParkView = new CarParkView(carParkModel);
+        this.carParkView = new CarParkView(carParkModel, carParkController);
         carParkView.setBounds(0, 0, 1200, 600);
 
-        this.settingsView = new SettingsView(carParkModel);
+        this.settingsView = new AboutView(carParkModel, carParkController);
         settingsView.setBounds(0, 0, 1200, 600);
 
-        this.buttonView = new ButtonView(carParkModel);
+        this.buttonView = new ButtonView(carParkModel, buttonController);
         buttonView.setBounds(0, 0, 1200, 600);
 
-        this.staticsView = new StaticsView(carParkModel);
+        this.staticsView = new StaticsView(carParkModel, carParkController);
         staticsView.setBounds(0, 0, 1200, 600);
 
 
@@ -54,6 +54,8 @@ public class Simulator {
         screen = new JFrame("Car Park Simulation");
         screen.setSize(1200, 750);
         screen.setLayout(null);
+        screen.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
 
 
         tabbedPane = new JTabbedPane();
@@ -97,13 +99,6 @@ public class Simulator {
         screen.setResizable(false);
 
         carParkModel.notifyViews();
-
-        /**
-         * Start running the simulation with 20 steps
-         */
-       // for (int i = 0; i < 100; i++) {
-            //carParkModel.tick();
-      //  }
     }
     public static void runSteps(int steps) {
         for (int i = 0; i < steps; i++) {
