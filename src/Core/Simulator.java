@@ -23,6 +23,7 @@ public class Simulator {
     private AbstractView settingsView;
 
     public static JTabbedPane tabbedPane;
+    public static JFrame screen;
 
     public Simulator() {
         /**
@@ -50,7 +51,7 @@ public class Simulator {
          * Create the JFrame that will display the views
          * and add these views to this JFrame
          */
-        JFrame screen = new JFrame("Car Park Simulation");
+        screen = new JFrame("Car Park Simulation");
         screen.setSize(1200, 750);
         screen.setLayout(null);
 
