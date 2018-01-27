@@ -6,6 +6,8 @@ import Models.AbstractModel;
 import Models.CarPark;
 import Views.ButtonView;
 
+import java.awt.event.ActionEvent;
+
 public class ButtonController extends AbstractController
 {
     /**
@@ -64,6 +66,11 @@ public class ButtonController extends AbstractController
                         1
                 );
             break;
+
+            case "reset":
+                ButtonView.setButtons("reset");
+                Simulator.tabbedPane.setSelectedIndex(0);
+                System.exit(0);
+            }
         }
     }
-}
