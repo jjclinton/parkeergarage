@@ -14,14 +14,13 @@ public abstract class Car extends AbstractModel
     private int minutesLeft;
     private boolean isPaying;
     private boolean hasToPay;
-    private Stack<Integer> reservationTimeList;
+    private int reservationTime;
 
 
     /**
      * Constructor for objects of class Car
      */
     public Car() {
-        reservationTimeList = new Stack<>();
     }
 
     public Location getLocation() {
@@ -58,15 +57,11 @@ public abstract class Car extends AbstractModel
 
     public void setReservationTime(int day, int hour, int minute) {
         String time = "" + day + hour + minute;
-        System.out.println(time);
-        reservationTimeList.add(Integer.parseInt(time));
+        reservationTime = Integer.parseInt(time);
     }
 
     public int getReservationTime() {
-        if (!reservationTimeList.empty()) {
-            return reservationTimeList.pop();
-        }
-        return 0;
+        return reservationTime;
     }
 
     public void tick() {
