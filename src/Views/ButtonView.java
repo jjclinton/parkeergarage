@@ -1,6 +1,4 @@
 package Views;
-import Controllers.ButtonController;
-import Core.Simulator;
 import Models.AbstractModel;
 import Models.CarPark;
 import java.awt.event.*;
@@ -49,14 +47,7 @@ public class ButtonView extends AbstractView {
         startDefault.addActionListener(controller);
         button1.addActionListener(controller);
         button100.addActionListener(controller);
-
-        reset.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                System.exit(0);
-            }
-        });
-
+        reset.addActionListener(controller);
     }
 
     @Override
