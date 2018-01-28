@@ -47,6 +47,7 @@ public class CarParkView extends AbstractView
         carParkImage = createImage(currentSize.width, currentSize.height);
 
         Graphics graphics = carParkImage.getGraphics();
+        drawLegend(graphics);
 
 
         for (int floor = 0; floor < CarPark.getNumberOfFloors(); floor++) {
@@ -96,6 +97,39 @@ public class CarParkView extends AbstractView
         graphics.setColor(Color.BLACK);
         graphics.drawString("Floor " + currentFloor, x, 30);
     }
+
+    private void drawLegend(Graphics graphics)  {
+        //draws a white rectangle
+        graphics.setColor(Color.WHITE);
+        graphics.fillRect(75, 370, 18, 9);
+        graphics.setColor(Color.BLACK);
+        graphics.drawString("Empty parking space", 100, 379);
+        //draws a red rectangle
+        graphics.setColor(Color.RED);
+        graphics.fillRect(320, 370, 18, 9);
+        graphics.setColor(Color.BLACK);
+        graphics.drawString("Occupied parking space", 345, 379);
+        //draws a cyan rectangle
+        graphics.setColor(Color.CYAN);
+        graphics.fillRect(75, 387, 18, 9);
+        graphics.setColor(Color.BLACK);
+        graphics.drawString("Empty pass holder parking space", 100, 396);
+        //draws a blue rectangle
+        graphics.setColor(Color.BLUE);
+        graphics.fillRect(320, 387, 18, 9);
+        graphics.setColor(Color.BLACK);
+        graphics.drawString("Occupied pass holder parking space", 345, 396);
+        //draws a pink rectangle
+        graphics.setColor(Color.pink);
+        graphics.fillRect(75, 404, 18, 9);
+        graphics.setColor(Color.BLACK);
+        graphics.drawString("Reserved space", 100, 414);
+        //draws a green rectangle
+        graphics.setColor(Color.green);
+        graphics.fillRect(320, 404, 18, 9);
+        graphics.setColor(Color.BLACK);
+        graphics.drawString("Occupied reserved parking space", 345, 414);
+        }
     private void currentDay() {
         dayLabel.setText("Current day: " + CarPark.getCurrentDay());
     }
