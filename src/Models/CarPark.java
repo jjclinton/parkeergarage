@@ -165,9 +165,8 @@ public class CarPark extends AbstractModel{
         carsArriving();
         carsEntering(entrancePassQueue);
         carsEntering(entranceCarQueue);
-        carsEntering(entranceResArrQueue);
         // Pause.
-        int tickPause = 4;
+        int tickPause = 1;
         try {
             Thread.sleep(tickPause);
         } catch (InterruptedException e) {
@@ -251,7 +250,7 @@ public class CarPark extends AbstractModel{
     }
 
     private void carsEntering(CarQueue queue){
-        int enterSpeed = 4; // number of cars that can enter per minute
+        int enterSpeed = 7; // number of cars that can enter per minute
         // Remove car from the front of the queue and assign to a parking space.
         for (int i = 0; i < enterSpeed; i++) {
             Car car = queue.removeCar();
@@ -368,6 +367,7 @@ public class CarPark extends AbstractModel{
         String time = "" + day + hour + minute;
         if (carsReserved.get(Integer.parseInt(time)) != null) {
             entranceResArrQueue.addCar(carsReserved.remove(Integer.parseInt(time)));
+            carsEntering(entranceResArrQueue);
         }
     }
     private Car removeCarAt(Location location) {
@@ -394,8 +394,7 @@ public class CarPark extends AbstractModel{
             car.setLocation(location);
             numberOfOpenSpots--;
         }
-        if (car instanceof ReservationCar) {
-            System.out.println("reserved");
+        if (oldCar == null && car instanceof ReservationCar) {
             cars.put(location, car);
             reserved.remove(location);
             numberOfOpenSpots--;
@@ -480,10 +479,6 @@ public class CarPark extends AbstractModel{
 
     public Double getTodayProfit(){
         return profitToday;
-    }
-
-    public int getCurrentDayOfYear(){
-       return dayOfYear;
     }
 
     public int getCurrentIntDay(){
