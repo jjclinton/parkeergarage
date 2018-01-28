@@ -23,6 +23,7 @@ public class Simulator {
 
     public static JTabbedPane tabbedPane;
     public static JFrame screen;
+    public static boolean pause;
 
     public Simulator() {
         /**
@@ -30,6 +31,7 @@ public class Simulator {
          * we need for the Car Park Simulation
          */
         this.carParkModel = new CarPark(3, 6, 30, 75);
+        pause = false;
 
         Controller carParkController = new Controller(carParkModel);
         ButtonController buttonController = new ButtonController(carParkModel);
@@ -100,9 +102,13 @@ public class Simulator {
 
         carParkModel.notifyViews();
     }
+
     public static void runSteps(int steps) {
         for (int i = 0; i < steps; i++) {
             carParkModel.tick();
+            if (pause) {
+                break;
+            }
         }
     }
 }
