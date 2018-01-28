@@ -3,14 +3,19 @@ package Views;
 import Controllers.Controller;
 import Models.*;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.io.IOException;
 
 public class CarParkView extends AbstractView
 {
     // image of the car park
+    private CarPark carPark;
     private Image carParkImage;
     private JLabel dayLabel;
+    private Image weatherImage;
+    private String lastWeather;
 
     /**
      * Constructor of CarParkView that expects a model belonging to this Views
@@ -19,8 +24,9 @@ public class CarParkView extends AbstractView
      */
     public CarParkView(CarPark model, Controller controller) {
         super(model, controller);
+        carPark = model;
         //show current day
-        dayLabel = new JLabel("Current day: " + CarPark.getCurrentDay());
+        dayLabel = new JLabel("Current day: " + model.getCurrentDay());
         dayLabel.setSize(500, 15);
         dayLabel.setLocation(0, 0);
         add(dayLabel);
@@ -33,6 +39,14 @@ public class CarParkView extends AbstractView
         }
 
         g.drawImage(carParkImage, 0, 0, null);
+    }
+
+    private void generateWeatherImage(String weather, Graphics g){
+        try {
+            weatherImage = ImageIO.read(this.getClass().getClassLoader().getResource(weather + ".png"));
+        } catch (IOException ex) {
+
+        }
     }
 
     @Override
@@ -48,21 +62,22 @@ public class CarParkView extends AbstractView
 
         Graphics graphics = carParkImage.getGraphics();
         drawLegend(graphics);
+        drawWeather(graphics);
 
 
-        for (int floor = 0; floor < CarPark.getNumberOfFloors(); floor++) {
+        for (int floor = 0; floor < carPark.getNumberOfFloors(); floor++) {
             drawFloorNumber(graphics, floor,floorNrX);
             floorNrX = floorNrX + 260;
-            for (int row = 0; row < CarPark.getNumberOfRows(); row++) {
-                for (int place = 0; place < CarPark.getNumberOfPlaces(); place++) {
+            for (int row = 0; row < carPark.getNumberOfRows(); row++) {
+                for (int place = 0; place < carPark.getNumberOfPlaces(); place++) {
                     Location location = new Location(floor, row, place);
-                    Car car = CarPark.getCar(location);
+                    Car car = carPark.getCar(location);
                     Color color = Color.WHITE;
 
-                    if(CarPark.isLocationPassReserved(location)){
+                    if(carPark.isLocationPassReserved(location)){
                         color = Color.cyan;
                     }
-                    if (CarPark.isLocationReserved(location)) {
+                    if (carPark.isLocationReserved(location)) {
                         color = Color.pink;
                     }
 
@@ -98,6 +113,18 @@ public class CarParkView extends AbstractView
         graphics.drawString("Floor " + currentFloor, x, 30);
     }
 
+    private void drawWeather(Graphics graphics){
+        String weather = carPark.getWeather().getWeather();
+
+        if(!weather.equals(lastWeather)){
+            System.out.println(weather);
+            lastWeather = weather;
+            generateWeatherImage(weather, graphics);
+        }
+
+        graphics.drawImage(weatherImage, 10, 10, 70, 70, this);
+    }
+
     private void drawLegend(Graphics graphics)  {
         //draws a white rectangle
         graphics.setColor(Color.WHITE);
@@ -129,8 +156,9 @@ public class CarParkView extends AbstractView
         graphics.fillRect(320, 404, 18, 9);
         graphics.setColor(Color.BLACK);
         graphics.drawString("Occupied reserved parking space", 345, 414);
-        }
+    }
+
     private void currentDay() {
-        dayLabel.setText("Current day: " + CarPark.getCurrentDay());
+        dayLabel.setText("Current day: " + carPark.getCurrentDay());
     }
 }

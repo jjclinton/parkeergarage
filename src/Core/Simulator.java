@@ -1,12 +1,10 @@
 package Core;
 
-import Controllers.AbstractController;
 import Controllers.ButtonController;
 import Controllers.Controller;
 import Models.CarPark;
 import Views.AbstractView;
 import Views.CarParkView;
-import Views.AboutView;
 import Views.ButtonView;
 import Views.StaticsView;
 
@@ -19,7 +17,6 @@ public class Simulator {
     private AbstractView carParkView;
     private AbstractView staticsView;
     private AbstractView buttonView;
-    private AbstractView settingsView;
 
     public static JTabbedPane tabbedPane;
     public static JFrame screen;
@@ -38,9 +35,6 @@ public class Simulator {
 
         this.carParkView = new CarParkView(carParkModel, carParkController);
         carParkView.setBounds(0, 0, 1200, 600);
-
-        this.settingsView = new AboutView(carParkModel, carParkController);
-        settingsView.setBounds(0, 0, 1200, 600);
 
         this.buttonView = new ButtonView(carParkModel, buttonController);
         buttonView.setBounds(0, 0, 1200, 600);
@@ -78,9 +72,6 @@ public class Simulator {
         buttonPanel.setLayout(null);
         buttonPanel.add(buttonView);
 
-        JComponent settingsPanel = new JPanel(false);
-        settingsPanel.setLayout(null);
-        settingsPanel.add(settingsView);
 
         /**
          * Add each tab
@@ -88,7 +79,6 @@ public class Simulator {
         tabbedPane.addTab("Simulator", mainPanel);
         tabbedPane.addTab("Statics", staticsPanel);
         tabbedPane.addTab("Button", buttonPanel);
-        tabbedPane.addTab("Settings", settingsPanel);
 
         screen.getContentPane().add(tabbedPane);
 
