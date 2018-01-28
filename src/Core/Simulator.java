@@ -69,7 +69,7 @@ public class Simulator {
         JComponent buttonPanel = new JPanel(false);
         buttonPanel.setLayout(null);
         buttonPanel.add(buttonView);
-        
+
 
         /**
          * Add each tab

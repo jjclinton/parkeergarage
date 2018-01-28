@@ -13,28 +13,28 @@ public class CarPark extends AbstractModel{
     private static final String PASS = "2";
     private static final String RES = "3";
 
-    private static int numberOfFloors;
-    private static int numberOfRows;
-    private static int numberOfPlaces;
-    private static int numberOfOpenSpots;
+    private int numberOfFloors;
+    private int numberOfRows;
+    private int numberOfPlaces;
+    private int numberOfOpenSpots;
 
-    private static CarQueue entranceCarQueue;
-    private static CarQueue entrancePassQueue;
-    private static CarQueue entranceResArrQueue;
-    private static CarQueue paymentCarQueue;
-    private static CarQueue exitCarQueue;
+    private CarQueue entranceCarQueue;
+    private CarQueue entrancePassQueue;
+    private CarQueue entranceResArrQueue;
+    private CarQueue paymentCarQueue;
+    private CarQueue exitCarQueue;
 
-    private static HashMap<Location, Boolean> passReserved;
-    private static HashMap<Location, Boolean> reserved;
-    private static HashMap<Integer, Car> carsReserved;
+    private HashMap<Location, Boolean> passReserved;
+    private HashMap<Location, Boolean> reserved;
+    private HashMap<Integer, Car> carsReserved;
 
-    private static Double profitTotal;
-    private static Double profitToday;
+    private Double profitTotal;
+    private Double profitToday;
     private int dayOfYear = 0;
-    private static int day = 0;
-    private static int hour = 0;
+    private int day = 0;
+    private int hour = 0;
     private int minute = 0;
-    private static String[] days;
+    private String[] days;
 
     private Boolean state;
 
@@ -76,7 +76,7 @@ public class CarPark extends AbstractModel{
             }
         }
 
-        days = new String[] {"Monday", "Thuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday", ""};
+        days = new String[] {"Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday", ""};
     }
 
     /**
@@ -84,7 +84,7 @@ public class CarPark extends AbstractModel{
      *
      * @return int number of floors in the car park.
      */
-    public static int getNumberOfFloors() {
+    public int getNumberOfFloors() {
         return numberOfFloors;
     }
 
@@ -93,7 +93,7 @@ public class CarPark extends AbstractModel{
      *
      * @return int number of rows in the car park.
      */
-    public static int getNumberOfRows() {
+    public int getNumberOfRows() {
         return numberOfRows;
     }
 
@@ -102,7 +102,7 @@ public class CarPark extends AbstractModel{
      *
      * @return int number of places in the car park.
      */
-    public static int getNumberOfPlaces() {
+    public int getNumberOfPlaces() {
         return numberOfPlaces;
     }
 
@@ -113,35 +113,20 @@ public class CarPark extends AbstractModel{
      * @param location Location object where to get the car from.
      * @return car object that is located at the given location or null if there is no car at the location.
      */
-    public static Car getCar(Location location) {
+    public Car getCar(Location location) {
         if (!checkLocation(location)) {
             return null;
         }
         return cars.get(location);
     }
-
-    public CarQueue getEntrancePaymentQueue() {
-        return paymentCarQueue;
-    }
-
-    public CarQueue getEntranceExitQueue() {
-        return exitCarQueue;
-    }
-
-    public CarQueue getEntranceCarQueue() {
-        return entranceCarQueue;
-    }
-
-    public CarQueue getEntrancePassQueue() {
-        return entrancePassQueue;
-    }
+    
     /**
      * Check if a location is valid in the car park.
      *
      * @param location Location object to check.
      * @return boolean whether location is valid.
      */
-    private static boolean checkLocation(Location location) {
+    private boolean checkLocation(Location location) {
         if(location == null)
             return false;
 
@@ -453,16 +438,16 @@ public class CarPark extends AbstractModel{
         exitCarQueue.addCar(car);
     }
 
-    public static String getCurrentDay() {
+    public String getCurrentDay() {
         return days[day];
     }
 
-    public static Boolean isLocationPassReserved(Location location){
+    public Boolean isLocationPassReserved(Location location){
         return passReserved.get(location) != null;
     }
     public int getCurrentHour(){ return hour; }
 
-    public static Boolean isLocationReserved(Location location){
+    public Boolean isLocationReserved(Location location){
         return reserved.get(location) != null;
     }
 
@@ -520,10 +505,6 @@ public class CarPark extends AbstractModel{
 
     public int getCurrentIntDay(){
         return day;
-    }
-
-    public int getMinute(){
-        return minute;
     }
 
     public void notification(){

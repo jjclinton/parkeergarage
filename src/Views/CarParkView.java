@@ -9,6 +9,7 @@ import java.awt.*;
 public class CarParkView extends AbstractView
 {
     // image of the car park
+    private CarPark carPark;
     private Image carParkImage;
     private JLabel dayLabel;
 
@@ -19,8 +20,9 @@ public class CarParkView extends AbstractView
      */
     public CarParkView(CarPark model, Controller controller) {
         super(model, controller);
+        carPark = model;
         //show current day
-        dayLabel = new JLabel("Current day: " + CarPark.getCurrentDay());
+        dayLabel = new JLabel("Current day: " + model.getCurrentDay());
         dayLabel.setSize(500, 15);
         dayLabel.setLocation(0, 0);
         add(dayLabel);
@@ -50,19 +52,19 @@ public class CarParkView extends AbstractView
         drawLegend(graphics);
 
 
-        for (int floor = 0; floor < CarPark.getNumberOfFloors(); floor++) {
+        for (int floor = 0; floor < carPark.getNumberOfFloors(); floor++) {
             drawFloorNumber(graphics, floor,floorNrX);
             floorNrX = floorNrX + 260;
-            for (int row = 0; row < CarPark.getNumberOfRows(); row++) {
-                for (int place = 0; place < CarPark.getNumberOfPlaces(); place++) {
+            for (int row = 0; row < carPark.getNumberOfRows(); row++) {
+                for (int place = 0; place < carPark.getNumberOfPlaces(); place++) {
                     Location location = new Location(floor, row, place);
-                    Car car = CarPark.getCar(location);
+                    Car car = carPark.getCar(location);
                     Color color = Color.WHITE;
 
-                    if(CarPark.isLocationPassReserved(location)){
+                    if(carPark.isLocationPassReserved(location)){
                         color = Color.cyan;
                     }
-                    if (CarPark.isLocationReserved(location)) {
+                    if (carPark.isLocationReserved(location)) {
                         color = Color.pink;
                     }
 
@@ -131,6 +133,6 @@ public class CarParkView extends AbstractView
         graphics.drawString("Occupied reserved parking space", 345, 414);
         }
     private void currentDay() {
-        dayLabel.setText("Current day: " + CarPark.getCurrentDay());
+        dayLabel.setText("Current day: " + carPark.getCurrentDay());
     }
 }
