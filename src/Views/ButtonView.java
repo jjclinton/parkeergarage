@@ -6,6 +6,7 @@ import javax.swing.*;
 
 public class ButtonView extends AbstractView {
     private static JButton startDefault;
+    private static JButton pause;
     private static JButton button1;
     private static JButton button100;
     private static JButton reset;
@@ -29,6 +30,12 @@ public class ButtonView extends AbstractView {
         startDefault.setLocation(25, 20);
         add(startDefault);
 
+        pause = new JButton("pause");
+        pause.setSize(110, 25);
+        pause.setLocation(25,20);
+        pause.setVisible(false);
+        add(pause);
+
         button1 = new JButton("1 step");
         button1.setSize(110, 25);
         button1.setLocation(150, 20);
@@ -48,6 +55,7 @@ public class ButtonView extends AbstractView {
         button1.addActionListener(controller);
         button100.addActionListener(controller);
         reset.addActionListener(controller);
+        pause.addActionListener(controller);
     }
 
     @Override
@@ -62,12 +70,21 @@ public class ButtonView extends AbstractView {
                 statusLabel.setText("300000 steps.");
                 button1.setVisible(false);
                 button100.setVisible(false);
+                startDefault.setVisible(false);
+                pause.setVisible(true);
                 break;
             case "1step":
                 statusLabel.setText("1 step.");
                 break;
             case "100steps":
                 statusLabel.setText("100 steps.");
+                break;
+            case "pause":
+                statusLabel.setText("paused");
+                button1.setVisible(true);
+                button100.setVisible(true);
+                startDefault.setVisible(true);
+                pause.setVisible(false);
                 break;
         }
     }

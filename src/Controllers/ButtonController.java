@@ -23,8 +23,8 @@ public class ButtonController extends AbstractController
         switch(e.getActionCommand()){
             case "Start default":
                 ButtonView.setButtons("default");
-
                 Simulator.tabbedPane.setSelectedIndex(0);
+                Simulator.pause = false;
                 new java.util.Timer().schedule(
                         new java.util.TimerTask() {
                             @Override
@@ -38,8 +38,8 @@ public class ButtonController extends AbstractController
 
             case "1 step":
                 ButtonView.setButtons("1step");
-
                 Simulator.tabbedPane.setSelectedIndex(0);
+                Simulator.pause = false;
                 new java.util.Timer().schedule(
                         new java.util.TimerTask() {
                             @Override
@@ -53,9 +53,8 @@ public class ButtonController extends AbstractController
 
             case "100 steps":
                 ButtonView.setButtons("100steps");
-
                 Simulator.tabbedPane.setSelectedIndex(0);
-
+                Simulator.pause = false;
                 new java.util.Timer().schedule(
                         new java.util.TimerTask() {
                             @Override
@@ -71,6 +70,13 @@ public class ButtonController extends AbstractController
                 ButtonView.setButtons("reset");
                 Simulator.tabbedPane.setSelectedIndex(0);
                 System.exit(0);
+            break;
+
+            case "pause":
+                ButtonView.setButtons("pause");
+                Simulator.tabbedPane.setSelectedIndex(0);
+                Simulator.pause = true;
+            break;
             }
         }
     }
