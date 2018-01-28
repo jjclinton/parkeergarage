@@ -477,6 +477,43 @@ public class CarPark extends AbstractModel{
         return total;
     }
 
+    public int getTotalReservationCars() {
+        int total = 0;
+        for(Location location : cars.keySet()) {
+            if (cars.get(location) != null) {
+                if(cars.get(location) instanceof ReservationCar)
+                total++;
+            }
+        }
+
+        return total;
+    }
+
+    public int getTotalPassholderCars() {
+        int total = 0;
+        for(Location location : cars.keySet()) {
+            if (cars.get(location) != null) {
+                if(cars.get(location) instanceof ParkingPassCar)
+                    total++;
+            }
+        }
+
+        return total;
+    }
+
+    public int getTotalAdHocCars() {
+        int total = 0;
+        for(Location location : cars.keySet()) {
+            if (cars.get(location) != null) {
+                if(cars.get(location) instanceof AdHocCar)
+                    total++;
+            }
+        }
+
+        return total;
+    }
+
+
     public Double getTodayProfit(){
         return profitToday;
     }

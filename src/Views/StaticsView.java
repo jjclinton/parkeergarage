@@ -9,17 +9,14 @@ import java.util.ArrayList;
 public class StaticsView extends AbstractView {
     private CarPark carPark;
 
-    private GraphPanel entranceCarQueueGraph;
-    private ArrayList<Double> entranceCarQueueGraphData;
+    private GraphPanel totalAdHocGraph;
+    private ArrayList<Double> totalAdHocGraphData;
 
-    private GraphPanel entrancePassQueueGraph;
-    private ArrayList<Double> entrancePassQueueGraphData;
+    private GraphPanel totalReservationsGraph;
+    private ArrayList<Double> totalReservationsGraphData;
 
-    private GraphPanel paymentCarQueueGraph;
-    private ArrayList<Double> paymentCarQueueGraphData;
-
-    private GraphPanel exitCarQueueGraph;
-    private ArrayList<Double> exitCarQueueGraphData;
+    private GraphPanel totalPassholdersGraph;
+    private ArrayList<Double> totalPassholdersGraphData;
 
     private GraphPanel carsParkedGraph;
     private ArrayList<Double> carsParkedGraphData;
@@ -38,25 +35,21 @@ public class StaticsView extends AbstractView {
         carPark = model;
 
         carsParkedGraphData = new ArrayList<>();
+        totalAdHocGraphData = new ArrayList<>();
+        totalReservationsGraphData = new ArrayList<>();
+        totalPassholdersGraphData = new ArrayList<>();
+
         for(int hour = 0; hour <= 23; hour++){
             carsParkedGraphData.add(0.0);
+            totalAdHocGraphData.add(0.0);
+            totalReservationsGraphData.add(0.0);
+            totalPassholdersGraphData.add(0.0);
         }
         carsParkedGraph = new GraphPanel(carsParkedGraphData, "Total cars parked");
 
-        entranceCarQueueGraphData = new ArrayList<>();
-        entrancePassQueueGraphData = new ArrayList<>();
-        paymentCarQueueGraphData = new ArrayList<>();
-        exitCarQueueGraphData = new ArrayList<>();
-        for(int minute = 0; minute < 60; minute++) {
-            entranceCarQueueGraphData.add(0.0);
-            entrancePassQueueGraphData.add(0.0);
-            paymentCarQueueGraphData.add(0.0);
-            exitCarQueueGraphData.add(0.0);
-        }
-        entranceCarQueueGraph = new GraphPanel(entranceCarQueueGraphData, "Entrance car queue");
-        entrancePassQueueGraph = new GraphPanel(entrancePassQueueGraphData, "Entrance passholders queue");
-        paymentCarQueueGraph = new GraphPanel(paymentCarQueueGraphData, "Payment queue");
-        exitCarQueueGraph = new GraphPanel(exitCarQueueGraphData, "Exit queue");
+        totalAdHocGraph = new GraphPanel(totalAdHocGraphData, "Total regular cars");
+        totalReservationsGraph = new GraphPanel(totalReservationsGraphData, "Total reservations parked");
+        totalPassholdersGraph = new GraphPanel(totalPassholdersGraphData, "Total passholders parked");
 
 
         profitGraphData = new ArrayList<>();
@@ -69,17 +62,14 @@ public class StaticsView extends AbstractView {
         setLayout(grid);
         add(carsParkedGraph);
         add(profitGraph);
-
-        add(entranceCarQueueGraph);
-        add(entrancePassQueueGraph);
-        add(paymentCarQueueGraph);
-        add(exitCarQueueGraph);
+        add(totalAdHocGraph);
+        add(totalPassholdersGraph);
+        add(totalReservationsGraph);
     }
 
     @Override
     public void updateView() {
         int currentHour = carPark.getCurrentHour();
-        int minute = carPark.getMinute();
         int currentDay = carPark.getCurrentIntDay();
 
         double totalParkedCars = (double) carPark.getTotalCars();
@@ -88,32 +78,22 @@ public class StaticsView extends AbstractView {
             carsParkedGraph.setData(carsParkedGraphData);
         }
 
-        double entranceCarQueue = (double) carPark.getEntranceCarQueue().carsInQueue();
-
-        if (entranceCarQueueGraph != null) {
-            entranceCarQueueGraphData.set(minute, entranceCarQueue);
-            entranceCarQueueGraph.setData(entranceCarQueueGraphData);
+        double totalAdHocCars = (double) carPark.getTotalAdHocCars();
+        if (totalAdHocGraphData != null) {
+            totalAdHocGraphData.set(currentHour, totalAdHocCars);
+            totalAdHocGraph.setData(totalAdHocGraphData);
         }
 
-        double entrancePassQueue = (double) carPark.getEntrancePassQueue().carsInQueue();
-
-        if (entrancePassQueueGraph != null) {
-            entrancePassQueueGraphData.set(minute, entrancePassQueue);
-            entrancePassQueueGraph.setData(entrancePassQueueGraphData);
+        double totalReservationCars = (double) carPark.getTotalReservationCars();
+        if (totalReservationsGraph != null) {
+            totalReservationsGraphData.set(currentHour, totalReservationCars);
+            totalReservationsGraph.setData(totalReservationsGraphData);
         }
 
-        double paymentQueue = (double) carPark.getEntrancePaymentQueue().carsInQueue();
-
-        if (paymentCarQueueGraph != null) {
-            paymentCarQueueGraphData.set(minute, paymentQueue);
-            paymentCarQueueGraph.setData(paymentCarQueueGraphData);
-        }
-
-        double exitQueue = (double) carPark.getEntranceExitQueue().carsInQueue();
-
-        if (exitCarQueueGraph != null) {
-            exitCarQueueGraphData.set(minute, exitQueue);
-            exitCarQueueGraph.setData(exitCarQueueGraphData);
+        double totalPassholdersCars = (double) carPark.getTotalPassholderCars();
+        if (totalPassholdersGraph != null) {
+            totalPassholdersGraphData.set(currentHour, totalPassholdersCars);
+            totalPassholdersGraph.setData(totalPassholdersGraphData);
         }
 
 
