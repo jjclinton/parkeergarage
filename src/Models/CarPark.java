@@ -37,6 +37,7 @@ public class CarPark extends AbstractModel{
     private String[] days;
 
     private Boolean state;
+    private Weather weather;
 
 
     // hashmap with all the locations for the cars
@@ -55,6 +56,8 @@ public class CarPark extends AbstractModel{
         this.numberOfFloors = numberOfFloors;
         this.numberOfRows = numberOfRows;
         this.numberOfPlaces = numberOfPlaces;
+
+        this.weather = new Weather();
 
         entranceCarQueue = new CarQueue();
         entrancePassQueue = new CarQueue();
@@ -201,6 +204,8 @@ public class CarPark extends AbstractModel{
 
             profitTotal = profitTotal + profitToday;
             profitToday = 0.0;
+
+            weather.nextDay(dayOfYear);
         }
         if (day > 6) {
             day -= 7;
@@ -208,7 +213,6 @@ public class CarPark extends AbstractModel{
         if (dayOfYear > 364) {
             dayOfYear = 0;
         }
-
     }
 
     /**
@@ -226,29 +230,41 @@ public class CarPark extends AbstractModel{
         int numberOfCars;
         int numberOfPassCars;
         int numberOfResCars;
+        double multiplier = 1;
+
+        switch (weather.getWeather()){
+            case "Rainy":
+                multiplier = 0.8;
+            break;
+
+            case "Snowy":
+                multiplier = 0.6;
+            break;
+        }
+
         //check weather it's a holiday/festival or not
         switch (dayOfYear) {
             case 339:
-                numberOfCars = getNumberOfCars(300);
-                numberOfPassCars = getNumberOfCars(100);
-                numberOfResCars = getNumberOfCars(20);
+                numberOfCars = getNumberOfCars((int) (300 * multiplier));
+                numberOfPassCars = getNumberOfCars((int) (100 * multiplier));
+                numberOfResCars = getNumberOfCars((int) (20 * multiplier));
                 //number of cars arriving on a weekday
                 break;
             default:
                 if (day < 5) {
-                    numberOfCars = getNumberOfCars(80);
-                    numberOfPassCars = getNumberOfCars(50);
-                    numberOfResCars = getNumberOfCars(15);
+                    numberOfCars = getNumberOfCars((int) (80 * multiplier));
+                    numberOfPassCars = getNumberOfCars((int) (50 * multiplier));
+                    numberOfResCars = getNumberOfCars((int) (15 * multiplier));
                     //number of cars arriving on a weekday
                 } else if (day == 5) {
-                    numberOfCars = getNumberOfCars(130);
-                    numberOfPassCars = getNumberOfCars(40);
-                    numberOfResCars = getNumberOfCars(20);
+                    numberOfCars = getNumberOfCars((int) (130 * multiplier));
+                    numberOfPassCars = getNumberOfCars((int) (40 * multiplier));
+                    numberOfResCars = getNumberOfCars((int) (20 * multiplier));
                     //number of cars arriving on a saturday
                 } else {
-                    numberOfCars = getNumberOfCars(40);
-                    numberOfPassCars = getNumberOfCars(5);
-                    numberOfResCars = getNumberOfCars(1);
+                    numberOfCars = getNumberOfCars((int) (40 * multiplier));
+                    numberOfPassCars = getNumberOfCars((int) (5 * multiplier));
+                    numberOfResCars = getNumberOfCars((int) (1 * multiplier));
                     //number of cars arriving on a sunday
                 }
                 break;
@@ -622,6 +638,10 @@ public class CarPark extends AbstractModel{
      */
     public int getCurrentIntDay(){
         return day;
+    }
+
+    public Weather getWeather(){
+        return weather;
     }
 
     /**

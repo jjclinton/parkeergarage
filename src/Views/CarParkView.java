@@ -3,8 +3,10 @@ package Views;
 import Controllers.Controller;
 import Models.*;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.io.IOException;
 
 public class CarParkView extends AbstractView
 {
@@ -12,6 +14,8 @@ public class CarParkView extends AbstractView
     private CarPark carPark;
     private Image carParkImage;
     private JLabel dayLabel;
+    private Image weatherImage;
+    private String lastWeather;
 
     /**
      * Constructor of CarParkView that expects a model belonging to this Views
@@ -37,6 +41,14 @@ public class CarParkView extends AbstractView
         g.drawImage(carParkImage, 0, 0, null);
     }
 
+    private void generateWeatherImage(String weather, Graphics g){
+        try {
+            weatherImage = ImageIO.read(this.getClass().getClassLoader().getResource(weather + ".png"));
+        } catch (IOException ex) {
+
+        }
+    }
+
     @Override
     public void updateView() {
         int floorNrX = 150;
@@ -50,6 +62,7 @@ public class CarParkView extends AbstractView
 
         Graphics graphics = carParkImage.getGraphics();
         drawLegend(graphics);
+        drawWeather(graphics);
 
 
         for (int floor = 0; floor < carPark.getNumberOfFloors(); floor++) {
@@ -100,6 +113,18 @@ public class CarParkView extends AbstractView
         graphics.drawString("Floor " + currentFloor, x, 30);
     }
 
+    private void drawWeather(Graphics graphics){
+        String weather = carPark.getWeather().getWeather();
+
+        if(!weather.equals(lastWeather)){
+            System.out.println(weather);
+            lastWeather = weather;
+            generateWeatherImage(weather, graphics);
+        }
+
+        graphics.drawImage(weatherImage, 10, 10, 70, 70, this);
+    }
+
     private void drawLegend(Graphics graphics)  {
         //draws a white rectangle
         graphics.setColor(Color.WHITE);
@@ -131,7 +156,8 @@ public class CarParkView extends AbstractView
         graphics.fillRect(320, 404, 18, 9);
         graphics.setColor(Color.BLACK);
         graphics.drawString("Occupied reserved parking space", 345, 414);
-        }
+    }
+
     private void currentDay() {
         dayLabel.setText("Current day: " + carPark.getCurrentDay());
     }
