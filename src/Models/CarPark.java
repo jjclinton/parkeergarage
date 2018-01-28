@@ -42,6 +42,15 @@ public class CarPark extends AbstractModel{
     // hashmap with all the locations for the cars
     private static HashMap<Location, Car> cars;
 
+
+    /**
+     * Constructor for model
+     *
+     * @param numberOfFloors Number of floors
+     * @param numberOfRows Number of rows
+     * @param numberOfPlaces Number of places
+     * @param reservedForPassHolders Amount of places reserved for passholders
+     */
     public CarPark(int numberOfFloors, int numberOfRows, int numberOfPlaces, int reservedForPassHolders) {
         this.numberOfFloors = numberOfFloors;
         this.numberOfRows = numberOfRows;
@@ -119,7 +128,7 @@ public class CarPark extends AbstractModel{
         }
         return cars.get(location);
     }
-    
+
     /**
      * Check if a location is valid in the car park.
      *
@@ -137,6 +146,9 @@ public class CarPark extends AbstractModel{
         return !(floor < 0 || floor >= numberOfFloors || row < 0 || row > numberOfRows || place < 0 || place > numberOfPlaces);
     }
 
+    /**
+     * Advance the carpark one tick
+     */
     public void tick() {
         advanceTime();
         forward();
@@ -159,6 +171,9 @@ public class CarPark extends AbstractModel{
         }
     }
 
+    /**
+     * Tick all cars
+     */
     private void forward(){
         for (Location key : cars.keySet()) {
             Car car = cars.get(key);
@@ -169,6 +184,9 @@ public class CarPark extends AbstractModel{
         }
     }
 
+    /**
+     * Advance the time by one minute
+     */
     private void advanceTime(){
         // Advance the time by one minute.
         minute++;
@@ -193,11 +211,17 @@ public class CarPark extends AbstractModel{
 
     }
 
+    /**
+     * Update all the views
+     */
     private void updateViews(){
         // Update the car park Views.
         super.notifyViews();
     }
 
+    /**
+     * Generate random arriving cars
+     */
     private void carsArriving(){
         int numberOfCars;
         int numberOfPassCars;
@@ -234,6 +258,11 @@ public class CarPark extends AbstractModel{
         addArrivingCars(numberOfResCars, RES);
     }
 
+    /**
+     * Handle entering cars
+     *
+     * @param queue queue of cars entering
+     */
     private void carsEntering(CarQueue queue){
         int enterSpeed = 7; // number of cars that can enter per minute
         // Remove car from the front of the queue and assign to a parking space.
@@ -253,6 +282,9 @@ public class CarPark extends AbstractModel{
     }
 
 
+    /**
+     * Handle leaving cars
+     */
     private void carsReadyToLeave(){
         // Add leaving cars to the payment queue.
         Car car = this.getFirstLeavingCar();
@@ -268,6 +300,9 @@ public class CarPark extends AbstractModel{
         }
     }
 
+    /**
+     * Handle current paying cars
+     */
     private void carsPaying(){
         // Let cars pay.
         int paymentSpeed = 7; // number of cars that can pay per minute
@@ -287,6 +322,9 @@ public class CarPark extends AbstractModel{
         }
     }
 
+    /**
+     * Handle leaving cars
+     */
     private void carsLeaving(){
         // Let cars leave.
         int exitSpeed = 11; // number of cars that can leave per minute
@@ -300,6 +338,11 @@ public class CarPark extends AbstractModel{
         }
     }
 
+    /**
+     * Get number of cars
+     * @param AvgArrivalsPH
+     * @return
+     */
     private int getNumberOfCars(int AvgArrivalsPH){
         Random random = new Random();
 
@@ -309,6 +352,11 @@ public class CarPark extends AbstractModel{
         return (int)Math.round(numberOfCarsPerHour / 60);
     }
 
+    /**
+     * Set arriving cars
+     * @param numberOfCars Amount of cars
+     * @param type
+     */
     private void addArrivingCars(int numberOfCars, String type){
         // Add the cars to the back of the queue.
         switch(type) {
@@ -348,6 +396,9 @@ public class CarPark extends AbstractModel{
         updateViews();
     }
 
+    /**
+     * Check reservation cars
+     */
     private void checkReservationCar() {
         String time = "" + day + hour + minute;
         if (carsReserved.get(Integer.parseInt(time)) != null) {
@@ -355,6 +406,12 @@ public class CarPark extends AbstractModel{
             carsEntering(entranceResArrQueue);
         }
     }
+
+    /**
+     * Remove car at location
+     * @param location location of the car
+     * @return Car
+     */
     private Car removeCarAt(Location location) {
         if (!checkLocation(location)) {
             return null;
@@ -372,6 +429,11 @@ public class CarPark extends AbstractModel{
         return car;
     }
 
+    /**
+     * Set car at location
+     * @param location location of the car
+     * @param car car object
+     */
     private void setCarAt(Location location, Car car) {
         Car oldCar = cars.get(location);
         if (oldCar == null && !(car instanceof  ReservationCar)) {
@@ -386,7 +448,11 @@ public class CarPark extends AbstractModel{
         }
     }
 
-
+    /**
+     * Get first free location for car
+     * @param forCar car object
+     * @return location or null
+     */
     private Location getFirstFreeLocation(Car forCar) {
         for (int floor = 0; floor < getNumberOfFloors(); floor++) {
             for (int row = 0; row < getNumberOfRows(); row++) {
@@ -417,6 +483,10 @@ public class CarPark extends AbstractModel{
         return null;
     }
 
+    /**
+     * Get first leaving car
+     * @return car object
+     */
     private Car getFirstLeavingCar() {
         for (int floor = 0; floor < getNumberOfFloors(); floor++) {
             for (int row = 0; row < getNumberOfRows(); row++) {
@@ -433,24 +503,51 @@ public class CarPark extends AbstractModel{
         return null;
     }
 
+    /**
+     * Handle cars leaving the spot
+     * @param car
+     */
     private void carLeavesSpot(Car car){
         this.removeCarAt(car.getLocation());
         exitCarQueue.addCar(car);
     }
 
+    /**
+     * Get current day string
+     * @return day
+     */
     public String getCurrentDay() {
         return days[day];
     }
 
+    /**
+     * Check if location is pass reserved
+     * @param location location to check
+     * @return true or false
+     */
     public Boolean isLocationPassReserved(Location location){
         return passReserved.get(location) != null;
     }
+
+    /**
+     * Get current hour
+     * @return
+     */
     public int getCurrentHour(){ return hour; }
 
+    /**
+     * Check if location is reserved
+     * @param location
+     * @return
+     */
     public Boolean isLocationReserved(Location location){
         return reserved.get(location) != null;
     }
 
+    /**
+     * Get total parked cars
+     * @return
+     */
     public int getTotalCars() {
         int total = 0;
         for(Location location : cars.keySet()) {
@@ -462,6 +559,10 @@ public class CarPark extends AbstractModel{
         return total;
     }
 
+    /**
+     * Get total parked reservation cars
+     * @return total
+     */
     public int getTotalReservationCars() {
         int total = 0;
         for(Location location : cars.keySet()) {
@@ -474,6 +575,10 @@ public class CarPark extends AbstractModel{
         return total;
     }
 
+    /**
+     * Get total parked passholders cars
+     * @return total
+     */
     public int getTotalPassholderCars() {
         int total = 0;
         for(Location location : cars.keySet()) {
@@ -486,6 +591,10 @@ public class CarPark extends AbstractModel{
         return total;
     }
 
+    /**
+     * Get total parked adhoc cars
+     * @return total
+     */
     public int getTotalAdHocCars() {
         int total = 0;
         for(Location location : cars.keySet()) {
@@ -499,14 +608,25 @@ public class CarPark extends AbstractModel{
     }
 
 
+    /**
+     * Get today profit
+     * @return
+     */
     public Double getTodayProfit(){
         return profitToday;
     }
 
+    /**
+     * Get current day as integer
+     * @return
+     */
     public int getCurrentIntDay(){
         return day;
     }
 
+    /**
+     * Make a new notification
+     */
     public void notification(){
         try {
             // Open an audio input stream.
