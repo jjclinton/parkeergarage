@@ -7,7 +7,11 @@ public class Location extends AbstractModel
     private int place;
 
     /**
-     * Constructor for objects of class Location
+     * Constructor for location
+     *
+     * @param floor number of floors
+     * @param row number of rows
+     * @param place number of places
      */
     public Location(int floor, int row, int place) {
         this.floor = floor;

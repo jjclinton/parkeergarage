@@ -36,7 +36,6 @@ public class CarPark extends AbstractModel{
     private int minute = 0;
     private String[] days;
 
-    private Boolean state;
     private Weather weather;
 
 
@@ -356,8 +355,9 @@ public class CarPark extends AbstractModel{
 
     /**
      * Get number of cars
-     * @param AvgArrivalsPH
-     * @return
+     *
+     * @param AvgArrivalsPH Average arrival per hour
+     * @return cars per hour
      */
     private int getNumberOfCars(int AvgArrivalsPH){
         Random random = new Random();
@@ -370,8 +370,9 @@ public class CarPark extends AbstractModel{
 
     /**
      * Set arriving cars
+     *
      * @param numberOfCars Amount of cars
-     * @param type
+     * @param type type of car
      */
     private void addArrivingCars(int numberOfCars, String type){
         // Add the cars to the back of the queue.
@@ -425,7 +426,9 @@ public class CarPark extends AbstractModel{
 
     /**
      * Remove car at location
+     *
      * @param location location of the car
+     *
      * @return Car
      */
     private Car removeCarAt(Location location) {
@@ -447,6 +450,7 @@ public class CarPark extends AbstractModel{
 
     /**
      * Set car at location
+     *
      * @param location location of the car
      * @param car car object
      */
@@ -466,6 +470,7 @@ public class CarPark extends AbstractModel{
 
     /**
      * Get first free location for car
+     *
      * @param forCar car object
      * @return location or null
      */
@@ -501,6 +506,7 @@ public class CarPark extends AbstractModel{
 
     /**
      * Get first leaving car
+     *
      * @return car object
      */
     private Car getFirstLeavingCar() {
@@ -521,7 +527,8 @@ public class CarPark extends AbstractModel{
 
     /**
      * Handle cars leaving the spot
-     * @param car
+     *
+     * @param car Car object
      */
     private void carLeavesSpot(Car car){
         this.removeCarAt(car.getLocation());
@@ -547,14 +554,17 @@ public class CarPark extends AbstractModel{
 
     /**
      * Get current hour
-     * @return
+     *
+     * @return current hour
      */
     public int getCurrentHour(){ return hour; }
 
     /**
      * Check if location is reserved
-     * @param location
-     * @return
+     *
+     * @param location location object
+     *
+     * @return true or false
      */
     public Boolean isLocationReserved(Location location){
         return reserved.get(location) != null;
@@ -562,7 +572,8 @@ public class CarPark extends AbstractModel{
 
     /**
      * Get total parked cars
-     * @return
+     *
+     * @return total parked cars
      */
     public int getTotalCars() {
         int total = 0;
@@ -577,7 +588,8 @@ public class CarPark extends AbstractModel{
 
     /**
      * Get total parked reservation cars
-     * @return total
+     *
+     * @return total parked reservation cars
      */
     public int getTotalReservationCars() {
         int total = 0;
@@ -593,7 +605,8 @@ public class CarPark extends AbstractModel{
 
     /**
      * Get total parked passholders cars
-     * @return total
+     *
+     * @return total parked pass holders
      */
     public int getTotalPassholderCars() {
         int total = 0;
@@ -608,8 +621,9 @@ public class CarPark extends AbstractModel{
     }
 
     /**
-     * Get total parked adhoc cars
-     * @return total
+     * Get total parked AdHoc cars
+     *
+     * @return get total parked AdHoc car
      */
     public int getTotalAdHocCars() {
         int total = 0;
@@ -626,7 +640,8 @@ public class CarPark extends AbstractModel{
 
     /**
      * Get today profit
-     * @return
+     *
+     * @return total today profit
      */
     public Double getTodayProfit(){
         return profitToday;
@@ -634,12 +649,18 @@ public class CarPark extends AbstractModel{
 
     /**
      * Get current day as integer
-     * @return
+     *
+     * @return current day as integer
      */
     public int getCurrentIntDay(){
         return day;
     }
 
+    /**
+     * Get current weather
+     *
+     * @return Weather object
+     */
     public Weather getWeather(){
         return weather;
     }
