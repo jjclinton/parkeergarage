@@ -66,8 +66,8 @@ public class ButtonController extends AbstractController
                 );
             break;
 
-            case "reset":
-                ButtonView.setButtons("reset");
+            case "exit":
+                ButtonView.setButtons("exit");
                 Simulator.tabbedPane.setSelectedIndex(0);
                 System.exit(0);
             break;

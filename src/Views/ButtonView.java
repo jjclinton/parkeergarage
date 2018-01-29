@@ -9,7 +9,7 @@ public class ButtonView extends AbstractView {
     private static JButton pause;
     private static JButton button1;
     private static JButton button100;
-    private static JButton reset;
+    private static JButton exit;
 
     private static JLabel statusLabel;
 
@@ -46,15 +46,15 @@ public class ButtonView extends AbstractView {
         button100.setLocation(275, 20);
         add(button100);
 
-        reset = new JButton("reset");
-        reset.setSize(110, 25);
-        reset.setLocation(400, 20);
-        add(reset);
+        exit = new JButton("exit");
+        exit.setSize(110, 25);
+        exit.setLocation(400, 20);
+        add(exit);
 
         startDefault.addActionListener(controller);
         button1.addActionListener(controller);
         button100.addActionListener(controller);
-        reset.addActionListener(controller);
+        exit.addActionListener(controller);
         pause.addActionListener(controller);
     }
 
