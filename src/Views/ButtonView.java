@@ -15,6 +15,12 @@ public class ButtonView extends AbstractView {
 
     private AbstractModel carParkModel;
 
+    /**
+     * Constructor of ButtonView
+     *
+     * @param model AbstractModel that belongs to this View
+     * @param controller Controller that belongs to this View
+     */
     public ButtonView(CarPark model, ActionListener controller) {
         super(model, controller);
 
@@ -58,12 +64,20 @@ public class ButtonView extends AbstractView {
         pause.addActionListener(controller);
     }
 
+    /**
+     * Update views.
+     */
     @Override
     public void updateView() {
         setVisible(true);
         super.updateView();
     }
 
+    /**
+     * Set button text
+     *
+     * @param status set status
+     */
     public static void setButtons(String status){
         switch (status){
             case "default":

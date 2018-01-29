@@ -22,11 +22,10 @@ public class Simulator {
     public static JFrame screen;
     public static boolean pause;
 
+    /**
+     * Simulator instance
+     */
     public Simulator() {
-        /**
-         * Create the model, Views and Controllers that
-         * we need for the Car Park Simulation
-         */
         this.carParkModel = new CarPark(3, 6, 30, 75);
         pause = false;
 
@@ -93,6 +92,10 @@ public class Simulator {
         carParkModel.notifyViews();
     }
 
+    /**
+     * Run the model a given steps
+     * @param steps amount of steps
+     */
     public static void runSteps(int steps) {
         for (int i = 0; i < steps; i++) {
             carParkModel.tick();

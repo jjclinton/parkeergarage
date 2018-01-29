@@ -7,6 +7,9 @@ public class Weather {
     private ArrayList<String> types;
     private String currentWeather;
 
+    /**
+     * Constructor of the weather.
+     */
     public Weather() {
         types = new ArrayList<>();
         types.add("Sunny");
@@ -16,6 +19,11 @@ public class Weather {
         currentWeather = "Sunny";
     }
 
+    /**
+     * Generate weather based on day of year
+     *
+     * @param dayOfYear day of the year
+     */
     public void nextDay(int dayOfYear) {
         Random random = new Random();
         int size = types.size();
@@ -30,6 +38,11 @@ public class Weather {
         currentWeather = types.get(index);
     }
 
+    /**
+     * Get current weather
+     *
+     * @return weather string
+     */
     public String getWeather(){
         return currentWeather;
     }

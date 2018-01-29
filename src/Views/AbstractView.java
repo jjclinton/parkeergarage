@@ -13,9 +13,10 @@ public abstract class AbstractView extends JPanel
 	protected ActionListener controller;
 
 	/**
-	 * Constructor of AbstractView that expects a model belonging to this Views.
+	 * Constructor of AbstractView that expects a model and controller that are belonging to this view.
 	 *
 	 * @param model AbstractModel that belongs to this Views.
+	 * @param controller ActionListener controller
 	 */
 	public AbstractView(AbstractModel model, ActionListener controller) {
 		this.model = model;
@@ -23,12 +24,13 @@ public abstract class AbstractView extends JPanel
 
 		this.controller = controller;
 
-		// we use absolute positioning so we can set the layout to null
 		setLayout(null);
 	}
 
+	/**
+	 * Repaint all the views
+	 */
 	public void updateView() {
 		repaint();
 	}
-
 }
