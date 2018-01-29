@@ -3,6 +3,9 @@ package Controllers;
 
 import Models.AbstractModel;
 
+/**
+ * class for the abstract controller for main buttons
+ */
 
 public abstract class AbstractController implements java.awt.event.ActionListener {
 
