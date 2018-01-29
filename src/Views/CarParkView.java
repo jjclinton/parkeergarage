@@ -20,7 +20,8 @@ public class CarParkView extends AbstractView
     /**
      * Constructor of CarParkView that expects a model belonging to this Views
      *
-     * @param model AbstractModel that belongs to this Views
+     * @param model AbstractModel that belongs to this View
+     * @param controller Controller that belongs to this View
      */
     public CarParkView(CarPark model, Controller controller) {
         super(model, controller);
@@ -32,6 +33,11 @@ public class CarParkView extends AbstractView
         add(dayLabel);
     }
 
+    /**
+     * Paint components
+     *
+     * @param g Graphics object
+     */
     @Override
     public void paintComponent(Graphics g) {
         if (carParkImage == null) {
@@ -41,6 +47,12 @@ public class CarParkView extends AbstractView
         g.drawImage(carParkImage, 0, 0, null);
     }
 
+    /**
+     * Set weather image
+     *
+     * @param weather Weather object
+     * @param g Graphics object
+     */
     private void generateWeatherImage(String weather, Graphics g){
         try {
             weatherImage = ImageIO.read(this.getClass().getClassLoader().getResource(weather + ".png"));
@@ -49,6 +61,9 @@ public class CarParkView extends AbstractView
         }
     }
 
+    /**
+     * Update views.
+     */
     @Override
     public void updateView() {
         int floorNrX = 150;
@@ -108,11 +123,23 @@ public class CarParkView extends AbstractView
         ); // TODO use dynamic size or constants
     }
 
+    /**
+     * Draw floor numbers
+     *
+     * @param graphics Graphics object
+     * @param currentFloor floor number
+     * @param x X position
+     */
     private void drawFloorNumber(Graphics graphics, int currentFloor, int x) {
         graphics.setColor(Color.BLACK);
         graphics.drawString("Floor " + currentFloor, x, 30);
     }
 
+    /**
+     * Draw the weather
+     *
+     * @param graphics Graphics object
+     */
     private void drawWeather(Graphics graphics){
         String weather = carPark.getWeather().getWeather();
 
@@ -125,6 +152,11 @@ public class CarParkView extends AbstractView
         graphics.drawImage(weatherImage, 10, 10, 70, 70, this);
     }
 
+    /**
+     * Draw the legend
+     *
+     * @param graphics Graphics object
+     */
     private void drawLegend(Graphics graphics)  {
         //draws a white rectangle
         graphics.setColor(Color.WHITE);
@@ -158,6 +190,9 @@ public class CarParkView extends AbstractView
         graphics.drawString("Occupied reserved parking space", 345, 414);
     }
 
+    /**
+     * Handle current day label
+     */
     private void currentDay() {
         dayLabel.setText("Current day: " + carPark.getCurrentDay());
     }

@@ -27,7 +27,8 @@ public class StaticsView extends AbstractView {
     /**
      * Constructor of CarParkView that expects a model belonging to this Views
      *
-     * @param model AbstractModel that belongs to this Views
+     * @param model AbstractModel that belongs to this View
+     * @param controller Controller that belongs to this View
      */
     public StaticsView(CarPark model, Controller controller) {
         super(model, controller);
@@ -67,6 +68,9 @@ public class StaticsView extends AbstractView {
         add(totalReservationsGraph);
     }
 
+    /**
+     * Update views.
+     */
     @Override
     public void updateView() {
         int currentHour = carPark.getCurrentHour();

@@ -28,11 +28,22 @@ public class GraphPanel extends JPanel {
     private List<Double> datas;
     private String title;
 
+    /**
+     * Create new GraphPanel
+     *
+     * @param datas data list
+     * @param title title for graph
+     */
     public GraphPanel(List<Double> datas, String title) {
         this.title = title;
         this.datas = datas;
     }
 
+    /**
+     * Paint the component with lines
+     *
+     * @param g graphics
+     */
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -119,7 +130,12 @@ public class GraphPanel extends JPanel {
             g2.fillOval(x, y, ovalW, ovalH);
         }
     }
-    
+
+    /**
+     * Get min data of the graph
+     *
+     * @return data
+     */
     private double getMinData() {
         double minData = Double.MAX_VALUE;
         for (Double data : datas) {
@@ -128,6 +144,11 @@ public class GraphPanel extends JPanel {
         return minData;
     }
 
+    /**
+     * Get max data of the graph
+     *
+     * @return data
+     */
     private double getMaxData() {
         double maxData = Double.MIN_VALUE;
         for (Double data : datas) {
@@ -136,6 +157,11 @@ public class GraphPanel extends JPanel {
         return maxData;
     }
 
+    /**
+     * Set the data list
+     *
+     * @param datas list of data
+     */
     public void setData(List<Double> datas) {
         this.datas = datas;
         invalidate();
