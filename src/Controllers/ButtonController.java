@@ -14,6 +14,8 @@ public class ButtonController extends AbstractController
      * Constructor of AbstractController with a model belong to this Controllers
      *
      * @param model AbstractModel that belongs to this Controllers
+     *
+     *              Give the amount of steps you want and execute it
      */
     public ButtonController(CarPark model) {
         super(model);
